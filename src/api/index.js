@@ -24,3 +24,26 @@ export const userLogout = () => {
     method: 'post',
   })
 }
+ 
+// 编辑用户
+const editApiMap = {
+  'student': '/student/edit',
+  'teacher': '/teacher/edit',
+  'admin': '/teacher/edit'
+} 
+
+export const editUser = (data) => {
+  console.log(data);
+  console.log(data.userRole);
+  console.log(editApiMap[data.userRole]);
+  
+  if (!editApiMap[data.userRole]) {
+    return Promise.reject('无效的用户角色')
+  }
+  console.log(editApiMap[data.userRole]);
+  return http.request({
+    url: editApiMap[data.userRole],
+    method: 'post',
+    data,
+  })
+}

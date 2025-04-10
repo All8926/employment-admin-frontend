@@ -47,6 +47,7 @@ const currentUser = async () => {
 
     router.beforeEach(async (to, from, next) => {
         // 白名单路由不需要登录
+        console.log('beforeEach---to', to);
         if (WHITE_PATH_LIST.includes(to.path)) {
             return next();
         }

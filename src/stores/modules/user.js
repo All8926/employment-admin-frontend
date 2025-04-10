@@ -1,18 +1,16 @@
-import {defineStore} from 'pinia'
-import {store} from '@/stores/index'
+import { defineStore } from 'pinia'
+import { store } from '@/stores/index'
 
 import router from "@/router/index"
-import {userLogout} from "@/api/index.js";
+import { userLogout, getCurrentUser } from "@/api/index.js";
 
 // console.log("store", store);
 
 export const useUserStore = defineStore("user", {
 
     state: () => ({
-        userinfo: {
-            name: 'admin',
-        },
-
+        userinfo: {},
+        departmentDate: [],
     }),
     actions: {
         // 退出登录
@@ -20,14 +18,21 @@ export const useUserStore = defineStore("user", {
             await userLogout()
             this.userinfo = null
             router.replace('/login')
-        }
+        },
+
+        // 获取当前用户详情
+        async getUserInfo() {
+            const res = await getCurrentUser()
+            this.userinfo = res.data
+            return res.data
+        },
 
 
     },
 
     persist: {
         key: "user",
-        paths: ["token", "userinfo",]
+        paths: ["treeData", "userinfo",]
     }
 })
 

@@ -29,6 +29,8 @@ import { departmentTree } from '@/api/department'
 import { ElMessage } from 'element-plus'
 import { login } from '@/api/index'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/modules/user'
+const userStore = useUserStore()
 
 const router = useRouter()
 
@@ -45,19 +47,17 @@ const rules = {
 	userRole: [{ required: true, message: '部门不能为空', trigger: 'change' }]
 }
 
-const treeData = ref([])
+ 
 
 const getDepartmentTree = async () => {
 	try {
 		const res = await departmentTree()
-		treeData.value = res.data
-		console.log(treeData.value);
-
+		userStore.departmentDate = res.data
 	} catch (error) {
 		ElMessage.error('获取部门数据失败')
 	}
 }
-getDepartmentTree()
+
 
 const handleLogin = () => {
 	// 提交表单逻辑
@@ -65,6 +65,7 @@ const handleLogin = () => {
     if (valid) {
       try {
         const res = await login(form.value)
+				await getDepartmentTree()
         ElMessage.success('登录成功')
         // 跳转到登录页面
         router.push('/')
@@ -79,6 +80,7 @@ const handleLogin = () => {
 const toRegister = () => {
 	router.replace('/register')
 }
+ 
 </script>
 
 <style lang="less" scoped>

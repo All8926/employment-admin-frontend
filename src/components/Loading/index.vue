@@ -2,7 +2,7 @@
   <div v-if="msg.show" class="loading-mask">
     <div class="content flex h-[100px] w-[120px] flex-col items-center justify-center rounded-[10px]">
       <loading-icon></loading-icon>
-      <div class="text-[14px]">{{ msg.title }}</div>
+      <div class="text-[14px] text-[#fff]">{{ msg.title }}</div>
     </div>
   </div>
 </template>

@@ -1,19 +1,30 @@
 <template>
 	<el-container v-if="isLayout === false" class="layout-container-demo">
 
-		<el-header style="text-align: right; font-size: 12px">
-			<div class="toolbar">
+		<el-header class="flex justify-between items-center ">
+			<div>管理系统</div>
+			<div>
+
 				<el-dropdown>
-					<el-icon style="margin-right: 8px; margin-top: 1px">
-						<setting />
-					</el-icon>
+					<div class="pr-[20px] flex items-center gap-[10px]"> 
+						<el-avatar :size="26" :src="userinfo?.avatar"  >
+							<el-icon>
+								<UserFilled />
+							</el-icon>
+						</el-avatar>
+						<span class="text-[16px]">{{userinfo?.userName}}</span>
+					</div>
 					<template #dropdown>
 						<el-dropdown-menu>
-							<el-dropdown-item @click="userStore.logout()">退出登录</el-dropdown-item>
+							<el-dropdown-item @click="userStore.logout()">
+								<el-icon>
+									<SwitchButton />
+								</el-icon>
+								退出登录</el-dropdown-item>
 						</el-dropdown-menu>
 					</template>
 				</el-dropdown>
-				<span>Tom</span>
+
 			</div>
 		</el-header>
 
@@ -29,7 +40,10 @@
 				<el-scrollbar>
 					<Breadcrumb />
 					<!-- 添加 router-view 来处理嵌套路由 -->
-					<router-view />
+					<el-config-provider :locale="zhCn">
+						<router-view />
+						</el-config-provider>
+				
 				</el-scrollbar>
 			</el-main>
 		</el-container>
@@ -41,17 +55,21 @@
 </template>
 
 <script setup>
-import { ref, computed, h,watchEffect  } from 'vue'
+import { ref, computed, h, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import {routes} from '@/router/routes.js'
+import { routes } from '@/router/routes.js'
 
+import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
-import { Setting } from '@element-plus/icons-vue'
+import * as Icons from '@element-plus/icons-vue'
+import { UserFilled, SwitchButton } from '@element-plus/icons-vue'
+
 import { useUserStore } from '@/stores/modules/user'
 const userStore = useUserStore()
 
-const userinfo = computed(() => userStore?.userInfo)
+const userinfo = computed(() => userStore?.userinfo)
 const currentUserRole = computed(() => userinfo.value?.userRole)
+console.log(userinfo, 'userinfo');
 
 const router = useRouter()
 const route = useRoute()
@@ -66,47 +84,54 @@ watchEffect(() => {
 	}
 })
 
+const renderTitle = (route) => {
+	const iconName = route.meta?.icon
+	const IconComponent = iconName ? Icons[iconName] : null
+
+	return [
+		IconComponent ? h(IconComponent, { style: 'width:18px;' }) : null,
+		h('span', { style: 'margin-left: 6px;' }, route.name)
+	]
+}
+
 /**
  * 递归生成菜单项
  */
 const generateMenu = (routes) => {
 	return routes
-			.filter(route => {
-				if (route.meta?.hideInLayout || route.meta?.hideInMenu) return false
-				const routeRole = route.meta?.userRole
-				if (!routeRole) return true
-				if (Array.isArray(routeRole)) return routeRole.includes(currentUserRole.value)
-				return routeRole === currentUserRole.value
-			})
-			.map(route => {
-				if (route.children && route.children.length > 0) {
-					return h(
-							ElSubMenu,
-							{ index: route.path },
-							{
-								title: () =>
-										h(
-												'div',
-												{
-													style: 'width: 100%; display: flex; align-items: center; cursor: pointer;',
-													onClick: (e) => {
-														e.stopPropagation() // 防止影响展开
-														router.push(route.path)
-													}
-												},
-												route.name
-										),
-								default: () => generateMenu(route.children)
-							}
-					)
-				} else {
-					return h(
-							ElMenuItem,
-							{ index: route.path },
-							() => route.name
-					)
-				}
-			})
+		.filter(route => {
+			if (route.meta?.hideInLayout || route.meta?.hideInMenu) return false
+			const routeRole = route.meta?.userRole
+			if (!routeRole) return true
+			if (Array.isArray(routeRole)) return routeRole.includes(currentUserRole.value)
+			return routeRole === currentUserRole.value
+		})
+		.map(route => {
+			const iconName = route.meta?.icon
+			const IconComponent = iconName ? Icons[iconName] : null
+
+			if (route.children && route.children.length > 0) {
+				return h(
+					ElSubMenu,
+					{ index: route.path },
+					{
+						title: () => renderTitle(route),
+						default: () => generateMenu(route.children)
+					}
+				)
+			} else {
+				return h(
+					ElMenuItem,
+					{ index: route.path },
+					{
+						default: () => [
+							IconComponent ? h(IconComponent, { style: 'width:18px;' }) : null,
+							h('span', { style: 'margin-left: 5px;' }, route.name)
+						]
+					}
+				)
+			}
+		})
 }
 
 const menuContent = computed(() => {
@@ -137,13 +162,10 @@ const activeMenu = computed(() => {
 	border-right: none;
 }
 
-.layout-container-demo .toolbar {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	right: 20px;
+.el-tooltip__trigger:focus-visible {
+	outline: unset;
 }
-
-
+:deep(.el-menu-item.is-active){
+	background-color: var(--el-color-primary-light-8);
+}
 </style>

@@ -13,6 +13,7 @@ export const routes = [
         name: '登录',
         meta: {
             hideInLayout: true,
+            icon: 'User',
         },
         component: () => import('@/views/login.vue')
     },
@@ -21,6 +22,9 @@ export const routes = [
         name: '个人页',
         redirect: '/user/index',
         component: () => import('@/views/user/setting.vue'),
+        meta: {
+            icon: 'User' ,
+        },
         children: [
             {
                 path: '/user/index',
@@ -30,6 +34,9 @@ export const routes = [
             {
                 path: '/user/setting',
                 name: '个人设置',
+                meta: {
+                    icon: "Setting",
+                },
                 component: () => import('@/views/user/setting.vue'),
             }
         ]
