@@ -13,14 +13,14 @@
 			<el-form-item label="性别" prop="gender">
 				<el-radio-group v-model="form.gender">
 					<el-radio :label="0">男</el-radio>
-					<el-radio :label="1">女</el-radio> 
+					<el-radio :label="1">女</el-radio>
 				</el-radio-group>
 			</el-form-item>
 			<el-form-item label="学号" prop="studentNumber">
 				<el-input v-model="form.studentNumber" />
 			</el-form-item>
 			<el-form-item label="部门" prop="deptId">
-				<el-tree-select placeholder="请选择部门" v-model="form.deptId" :data="treeData" :props="{ value: 'id', label: 'name' }" node-key="id" /> 
+				<el-tree-select check-strictly placeholder="请选择部门" v-model="form.deptId" :data="treeData" :props="{ value: 'id', label: 'name' }" node-key="id" />
 			</el-form-item>
 			<el-form-item label="手机号" prop="phone">
 				<el-input v-model="form.phone" />

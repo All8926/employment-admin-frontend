@@ -80,7 +80,7 @@
 				</el-pagination>
 			</div>
 		</el-card>
-    <UpdateModal :visible="visible" :title="modalTitle"  :cancel="(value) => handleVisible(value)" :submit="getList()" :formData="currentRow" /> 
+    <UpdateModal :visible="visible" :title="modalTitle"  :cancel="(value) => handleVisible(value)" @submit="getList" :formData="currentRow" />
 	</div>
 </template>
 
@@ -110,7 +110,7 @@ const visible = ref(false)
 const currentRow = ref(null)
 
 const handleVisible = (val) => {
-	visible.value = val 
+	visible.value = val
 }
 
 const getList = async () => {
@@ -125,19 +125,19 @@ const handleSearch = () => {
 }
 
 const openModal = (row,title) => {
-  currentRow.value = row 
+  currentRow.value = row
   modalTitle.value = title
   handleVisible(true)
 }
 
- 
+
 
 const handleDelete = (row) => {
 	console.log(row, 'row');
   ElMessageBox.confirm(
-    '确定删除这个学生账号吗?', 
+    '确定删除这个学生账号吗?',
     '提示',
-    { 
+    {
       type: 'warning',
     }
   )
@@ -161,8 +161,8 @@ const handleReset = () => {
 	getList()
 }
 
- 
-// getList()
+
+getList()
 </script>
 
 <style lang="less" scoped>

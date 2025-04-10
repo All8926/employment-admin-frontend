@@ -18,6 +18,14 @@ export const routes = [
         component: () => import('@/views/login.vue')
     },
     {
+        path: '/department',
+        name: '部门管理',
+        meta: {
+            icon: 'School',
+        },
+        component: () => import('@/views/department/index.vue'),
+    },
+    {
         path: '/user',
         name: '个人页',
         redirect: '/user/index',
@@ -35,14 +43,13 @@ export const routes = [
                 path: '/user/setting',
                 name: '个人设置',
                 meta: {
-                    icon: "Setting",
                 },
                 component: () => import('@/views/user/setting.vue'),
             }
         ]
     },
     {
-        path: '/student',
+        path: '/user',
         name: '学生管理',
         redirect: '/student/index',
         children: [
