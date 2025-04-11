@@ -7,7 +7,7 @@
 
 				<el-dropdown>
 					<div class="pr-[20px] flex items-center gap-[10px]"> 
-						<el-avatar :size="26" :src="userinfo?.avatar"  >
+						<el-avatar :size="26" :src="userinfo?.userAvatar"  >
 							<el-icon>
 								<UserFilled />
 							</el-icon>

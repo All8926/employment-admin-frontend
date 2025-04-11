@@ -69,6 +69,18 @@ export const routes = [
         ]
     },
     {
+        path: '/enterprise',
+        name: '企业管理',
+        redirect: '/enterprise/list',
+        children: [
+            {
+                path: '/enterprise/list',
+                name: '企业列表',
+                component: () => import('@/views/enterprise/list.vue')
+            } 
+        ]
+    },
+    {
         path: '/statistics',
         name: '数据统计',
         component: () => import('@/views/statistics/index.vue'),

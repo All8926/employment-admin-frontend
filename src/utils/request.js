@@ -21,7 +21,7 @@ class Http {
   axiosInstance;
 
   constructor(config) {
-    this.axiosInstance = Axios.create(config); // 每个实例有自己的 axios 实例
+    this.axiosInstance = Axios.create(config); 
     this.httpInterceptorsRequest();
     this.httpInterceptorsResponse();
   }

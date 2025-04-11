@@ -11,7 +11,7 @@
 				<el-radio-group v-model="form.userRole">
 					<el-radio value="student">学生</el-radio>
 					<el-radio value="teacher">教师</el-radio>
-					<el-radio value="employer">企业</el-radio>
+					<el-radio value="enterprise">企业</el-radio>
 				</el-radio-group>
 			</el-form-item>
 

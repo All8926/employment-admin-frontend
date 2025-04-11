@@ -29,7 +29,8 @@ export const userLogout = () => {
 const editApiMap = {
   'student': '/student/edit',
   'teacher': '/teacher/edit',
-  'admin': '/teacher/edit'
+  'admin': '/teacher/edit',
+  'enterprise': '/enterprise/edit'
 } 
 
 export const editUser = (data) => {
@@ -45,5 +46,17 @@ export const editUser = (data) => {
     url: editApiMap[data.userRole],
     method: 'post',
     data,
+  })
+}
+
+// 文件上传
+export const uploadFile = (data,biz) => {
+  return http.request({
+    url: '/file/upload?biz='+biz,
+    method: 'post',
+    data,
+    // headers: {
+    //   'Content-Type': 'multipart/form-data'
+    // }
   })
 }
