@@ -35,3 +35,39 @@ export const deleteStudent = (data) => {
     data,
   })
 }
+
+// 新增简历
+export const addResume = (data) => {
+  return http.request({
+    url: '/resume/add',
+    method: 'post',
+    data,
+  })
+}
+
+// 获取简历列表
+export const resumeList = (data) => {
+  return http.request({
+    url: '/resume/list/page',
+    method: 'post',
+    data,
+  })
+}
+
+// 更新简历
+export const updateResume = (data) => {
+  return http.request({
+    url: '/resume/update',
+    method: 'post',
+    data,
+  })
+}
+
+// 删除简历
+export const deleteResume = (data) => {
+  return http.request({
+    url: '/resume/delete',
+    method: 'post',
+    data,
+  })
+}

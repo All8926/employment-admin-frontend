@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :model-value="visible"  @update:model-value="updateVisible" :title="title" width="500">
+  <el-dialog :model-value="visible"  @update:model-value="updateVisible" :title="title" width="40%">
     <el-form :model="form" :disabled="disabled" :rules="rules" label-width="120px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" placeholder="请输入名称"></el-input>

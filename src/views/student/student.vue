@@ -80,7 +80,7 @@
 				</el-pagination>
 			</div>
 		</el-card>
-    <UpdateModal :visible="visible" :title="modalTitle"  :cancel="(value) => handleVisible(value)" @submit="getList" :formData="currentRow" />
+    <StudentModal :visible="visible" :title="modalTitle"  :cancel="(value) => handleVisible(value)" @submit="getList" :formData="currentRow" />
 	</div>
 </template>
 
@@ -90,7 +90,7 @@ import { studentList } from '@/api/student'
 
 import { RefreshRight } from '@element-plus/icons-vue'
 import {deleteStudent} from '@/api/student'
-import UpdateModal from './components/UpdateModal.vue'
+import StudentModal from './components/StudentModal.vue'
 import { useUserStore } from "@/stores/modules/user.js";
 const userStore = useUserStore()
 

@@ -49,20 +49,20 @@ export const routes = [
         ]
     },
     {
-        path: '/user',
+        path: '/student',
         name: '学生管理',
         redirect: '/student/index',
         children: [
             {
                 path: '/student/index',
                 name: '学生列表',
-                component: () => import('@/views/student/list.vue')
+                component: () => import('@/views/student/student.vue')
             },
             {
                 path: '/student/resume',
                 name: '简历管理',
                 meta: {
-                    userRole: "student",
+                    userRole: ["student","admin","teacher"],
                 },
                 component: () => import('@/views/student/resume.vue'),
             }
@@ -77,7 +77,7 @@ export const routes = [
                 path: '/enterprise/list',
                 name: '企业列表',
                 component: () => import('@/views/enterprise/list.vue')
-            } 
+            }
         ]
     },
     {

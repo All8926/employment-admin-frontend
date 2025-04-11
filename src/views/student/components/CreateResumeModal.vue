@@ -1,15 +1,20 @@
 <template>
-  <el-dialog :model-value="visible"  @update:model-value="updateVisible" :title="title" width="40%">
-    <el-form :model="form"  :rules="rules" label-width="120px" ref="formRef">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" placeholder="请输入名称"></el-input>
+  <el-dialog :model-value="visible"  @update:model-value="updateVisible" :title="title" width="35%">
+    <el-form :model="form"  label-width="100px">
+      <el-form-item label="名称">
+        <el-input v-model="form.fileName" placeholder="请输入简历名称"></el-input>
       </el-form-item>
 
-      <el-form-item label="上级部门" >
-				<el-tree-select check-strictly placeholder="请选择上级部门" v-model="form.parentId" :data="treeData" :props="{ value: 'id', label: 'name' }" node-key="id" />
-			</el-form-item>
-      <el-form-item label="排序" >
-      <el-input v-model="form.sort" />
+      <el-form-item label="是否生效版本">
+        <el-select v-model="form.isActive" placeholder="请选择">
+          <el-option label="否" :value="0"></el-option>
+          <el-option label="是" :value="1"></el-option>
+        </el-select>
+      </el-form-item>
+
+
+      <el-form-item label="备注" >
+      <el-input v-model="form.remark" type="textarea" />
     </el-form-item>
 
     </el-form>
@@ -20,6 +25,7 @@
           确定
         </el-button>
       </div>
+
     </template>
   </el-dialog>
 </template>
@@ -27,9 +33,9 @@
 <script setup>
 import { ref, defineProps, defineEmits, computed } from 'vue'
 import { useUserStore } from '@/stores/modules/user'
-import {addDepartment, updateDepartment} from '@/api/department.js'
-const userStore = useUserStore()
+import {updateStudent} from '@/api/student'
 
+const userStore = useUserStore()
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -48,17 +54,13 @@ const props = defineProps({
   },
 })
 
-const formRef = ref(null)
 const form = ref({
-    name: '',
-    parentId: null,
-    sort:0
+    fileName: '',
+    isActive: 0,
+    remark: '',
 })
 const treeData = userStore?.departmentDate
 
-const rules = {
-    name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-}
 
 const emit = defineEmits(['submit'])
 
@@ -69,21 +71,26 @@ const updateVisible = (value) => {
 // 提交更新
 const handleSubmit = async () =>{
   try {
-     await addDepartment(form.value)
+     await updateStudent(form.value)
     ElMessage.success('操作成功')
     updateVisible(false)
     emit('submit')
-      // 重置表单
-      form.value = {
-        name: '',
-        parentId: null,
-        sort:0
-      }
   } catch (error) {
     console.log(error)
   }
 }
 
+// 审核
+const handleStatus = async (status) => {
+  try {
+    await updateStudent({...form.value, status})
+    ElMessage.success('操作成功')
+    updateVisible(false)
+    emit('submit')
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 </script>
 

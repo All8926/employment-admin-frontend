@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :model-value="visible"  @update:model-value="updateVisible" :title="title" width="500">
+  <el-dialog :model-value="visible"  @update:model-value="updateVisible" :title="title" width="40%">
     <el-form :model="form" :disabled="disabled">
       <el-form-item label="姓名">
         <el-input v-model="form.userName" placeholder="请输入姓名"></el-input>
@@ -21,12 +21,12 @@
         <el-input v-model="form.phone" placeholder="请输入电话"></el-input>
       </el-form-item>
       <el-form-item label="部门" >
-				<el-tree-select placeholder="请选择部门" v-model="form.deptId" :data="treeData" :props="{ value: 'id', label: 'name' }" node-key="id" /> 
+				<el-tree-select placeholder="请选择部门" v-model="form.deptId" :data="treeData" :props="{ value: 'id', label: 'name' }" node-key="id" />
 			</el-form-item>
       <el-form-item label="简介" >
       <el-input v-model="form.userProfile" type="textarea" />
     </el-form-item>
- 
+
     </el-form>
     <template #footer>
       <div class="dialog-footer" v-if="!disabled && title === '修改'">
@@ -59,7 +59,7 @@ const props = defineProps({
   title: {
     type: String,
     default: '修改'
-  }, 
+  },
   formData: {
     type: Object,
     default: () => {
@@ -70,7 +70,7 @@ const props = defineProps({
         email: '',
         phone: '',
         studentNumber: '',
-        userProfile: '', 
+        userProfile: '',
         deptId: null,
         userProfile:''
       }
@@ -79,9 +79,9 @@ const props = defineProps({
   cancel: {
     type: Function,
     default: () => {
-      
+
     }
-  }, 
+  },
 })
 
 const disabled = computed(() => props.title !==  '修改')
