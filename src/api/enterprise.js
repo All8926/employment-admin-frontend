@@ -1,6 +1,6 @@
 import {http} from '@/utils/request'
 
-// 学生注册
+// 企业信息注册
 export const enterpriseRegister = (data) => {
   return http.request({
     url: '/enterprise/register',
@@ -9,7 +9,7 @@ export const enterpriseRegister = (data) => {
   })
 }
 
-// 学生列表分页
+// 企业信息列表分页
 export const enterpriseList = (data) => {
   return http.request({
     url: '/enterprise/list/page/vo',
@@ -18,7 +18,7 @@ export const enterpriseList = (data) => {
   })
 }
 
-// 更新学生信息
+// 更新企业信息信息
 export const updateEnterprise = (data) => {
   return http.request({
     url: '/enterprise/update',
@@ -27,7 +27,7 @@ export const updateEnterprise = (data) => {
   })
 }
 
-//删除学生
+//删除企业信息
 export const deleteEnterprise = (data) => {
   return http.request({
     url: '/enterprise/delete',
@@ -35,3 +35,42 @@ export const deleteEnterprise = (data) => {
     data,
   })
 }
+
+// 新增资质
+export const addCertification = (data) => {
+  return http.request({
+    url: '/enterprise/certification/add',
+    method: 'post',
+    data,
+  })
+}
+
+// 分页获取资质列表
+export const certificationList = (data) => {
+  return http.request({
+    url: '/enterprise/certification/list/page',
+    method: 'post',
+    data,
+  })
+}
+
+// 更新资质
+export const updateCertification = (data) => {
+  return http.request({
+    url: '/enterprise/certification/update',
+    method: 'post',
+    data,
+  })
+}
+
+// 删除资质
+export const deleteCertification = (data) => {
+  return http.request({
+    url: '/enterprise/certification/delete',
+    method: 'post',
+    data,
+  })
+}
+
+
+ 

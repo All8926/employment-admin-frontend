@@ -44,6 +44,18 @@
 				<el-tree-select placeholder="请选择部门" v-model="form.deptId" :data="treeData"
 					:props="{ value: 'id', label: 'name' }" node-key="id" />
 			</el-form-item>
+			<el-form-item label="统一社会信用代码" v-if="form?.userRole == 'enterprise'">
+				<el-input v-model="form.licenseNum" placeholder="请输入统一社会信用代码"></el-input>
+			</el-form-item>
+			<el-form-item label="办公地址" v-if="form?.userRole == 'enterprise'">
+				<el-input v-model="form.address" placeholder="请输入办公地址"></el-input>
+			</el-form-item>
+			<el-form-item label="经营范围" v-if="form?.userRole == 'enterprise'">
+				<el-input v-model="form.businessScope" placeholder="请输入经营范围"></el-input>
+			</el-form-item>
+			<el-form-item label="所属行业" v-if="form?.userRole == 'enterprise'">
+				<el-input v-model="form.industry" placeholder="请输入所属行业"></el-input>
+			</el-form-item>
 			<el-form-item label="简介">
 				<el-input v-model="form.userProfile" type="textarea" />
 			</el-form-item>
@@ -67,14 +79,19 @@ const userStore = useUserStore()
 const form = ref(userStore?.userinfo)
 const treeData = userStore?.departmentDate
 const formData = ref(null)
-// 修改用户信息
+// 提交修改
 const handleSubmit = async () => {
 	try {
-		const res = await uploadFile(formData.value, 'user_avatar')
-		let avatarUrl = res.data
-		form.value.userAvatar = avatarUrl 
+		if (formData.value) {
+			const res = await uploadFile(formData.value, 'user_avatar')
+			let avatarUrl = res.data
+			form.value.userAvatar = avatarUrl
+		}
 		await editUser(form.value)
+		userStore?.getUserInfo()
+		formData.value = null
 		ElMessage.success('修改成功')
+		
 	} catch (error) {
 		console.log(error)
 	}
@@ -100,6 +117,7 @@ const handleAvatarSuccess = async (response, file) => {
 
 }
 
+// 上传前校验
 const beforeAvatarUpload = (rawFile) => {
 	console.log(rawFile);
 

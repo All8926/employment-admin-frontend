@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col gap-4">
 		<el-card shadow="never">
-			<el-form :model="queryParams" inline class="form-inline"   >
+			<el-form :model="queryParams" inline class="form-inline">
 				<el-form-item label="姓名">
 					<el-input v-model="queryParams.userName" placeholder="请输入姓名"></el-input>
 				</el-form-item>
@@ -25,7 +25,7 @@
 				<el-form-item label="是否认证">
 					<el-select v-model="queryParams.isAuthorized" clearable placeholder="请选择">
 						<el-option label="否" :value="0"></el-option>
-						<el-option label="是" :value="1"></el-option> 
+						<el-option label="是" :value="1"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item>
@@ -53,11 +53,13 @@
 					<template #default="scope">
 						<span>{{ scope.row.gender === 0 ? '男' : scope.row.gender === 1 ? '女' : '未知' }}</span>
 					</template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column prop="phone" label="手机号" />
 				<el-table-column prop="enterpriseName" label="企业名称" />
-				<el-table-column prop="isAuthorized" label="是否认证"> 
-					<template #default="scope"> 
+				<el-table-column prop="licenseNum" label="统一社会信用代码" />
+				<el-table-column prop="industry" label="所属行业" />
+				<el-table-column prop="isAuthorized" label="是否认证">
+					<template #default="scope">
 						<el-tag type="success" effect="dark" v-if="scope.row.isAuthorized === 1">已认证</el-tag>
 						<el-tag type="danger" effect="dark" v-if="scope.row.isAuthorized === 0">未认证</el-tag>
 					</template>
@@ -73,15 +75,19 @@
 
 				<el-table-column fixed="right" label="操作" min-width="120">
 					<template #default="scope">
-						<el-button @click="openModal(scope.row, '详情')" v-if="scope.row.status !== 0" link type="primary" size="small" >
+						<el-button @click="openModal(scope.row, '详情')" v-if="scope.row.status !== 0" link type="primary"
+							size="small">
 							详情
 						</el-button>
-						<el-button @click="openModal(scope.row, '审核')" v-if="scope.row.status === 0" link type="warning" size="small"  >
+						<el-button @click="openModal(scope.row, '审核')" v-if="scope.row.status === 0" link type="warning"
+							size="small">
 							审核
 						</el-button>
-						<el-button @click="openModal(scope.row, '修改')" v-if="scope.row.status === 1" link type="primary" size="small">修改</el-button>
+						<el-button @click="openModal(scope.row, '修改')" v-if="scope.row.status === 1" link type="primary"
+							size="small">修改</el-button>
 
-						<el-button v-if="scope.row.status === 1" link type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
+						<el-button v-if="scope.row.status === 1" link type="danger" size="small"
+							@click="handleDelete(scope.row)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -91,7 +97,8 @@
 				</el-pagination>
 			</div>
 		</el-card>
-    <UpdateModal :visible="visible" :title="modalTitle"  :cancel="(value) => handleVisible(value)" @submit="getList" :formData="currentRow" />
+		<EnterpriseModal :visible="visible" :title="modalTitle" :cancel="(value) => handleVisible(value)" @submit="getList"
+			:formData="currentRow" />
 	</div>
 </template>
 
@@ -100,8 +107,8 @@ import { ref } from 'vue'
 import { enterpriseList } from '@/api/enterprise'
 
 import { RefreshRight } from '@element-plus/icons-vue'
-import {deleteEnterprise} from '@/api/enterprise'
-import UpdateModal from './components/UpdateModal.vue'
+import { deleteEnterprise } from '@/api/enterprise'
+import EnterpriseModal from './components/EnterpriseModal.vue'
 import { useUserStore } from "@/stores/modules/user.js";
 const userStore = useUserStore()
 
@@ -135,31 +142,31 @@ const handleSearch = () => {
 	getList()
 }
 
-const openModal = (row,title) => {
-  currentRow.value = row
-  modalTitle.value = title
-  handleVisible(true)
+const openModal = (row, title) => {
+	currentRow.value = row
+	modalTitle.value = title
+	handleVisible(true)
 }
 
 
 
 const handleDelete = (row) => {
 	console.log(row, 'row');
-  ElMessageBox.confirm(
-    '确定删除这个学生账号吗?',
-    '提示',
-    {
-      type: 'warning',
-    }
-  )
-    .then(async () => {
-     await deleteEnterprise({id: row.id})
-      ElMessage.success('删除成功')
-      getList()
-    })
-    .catch(() => {
-     handleVisible(false)
-    })
+	ElMessageBox.confirm(
+		'确定删除这个企业信息账号吗?',
+		'提示',
+		{
+			type: 'warning',
+		}
+	)
+		.then(async () => {
+			await deleteEnterprise({ id: row.id })
+			ElMessage.success('删除成功')
+			getList()
+		})
+		.catch(() => {
+			handleVisible(false)
+		})
 }
 
 // 重置搜索条件

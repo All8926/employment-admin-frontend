@@ -3,14 +3,12 @@
 		<el-card shadow="never">
 			<el-form :model="queryParams" inline class="form-inline"> 
 				<el-form-item label="名称">
-					<el-input v-model="queryParams.fileName" placeholder="请输入简历名称"></el-input>
+					<el-input v-model="queryParams.fileName" placeholder="请输入资质名称"></el-input>
 				</el-form-item>
-				<el-form-item label="状态">
-					<el-select v-model="queryParams.isActive" clearable placeholder="请选择状态">
-						<el-option label="未生效" :value="0"></el-option>
-						<el-option label="生效中" :value="1"></el-option>
-					</el-select>
+				<el-form-item label="类型">
+					<el-input v-model="queryParams.certType" placeholder="请输入资质类型"></el-input>
 				</el-form-item>
+		 
 				<el-form-item>
 					<el-button @click="handleReset">重置</el-button>
 					<el-button type="primary" @click="handleSearch">查询</el-button>
@@ -20,9 +18,9 @@
 		</el-card>
 		<el-card shadow="never">
 			<div class="flex justify-between items-center mb-[20px]">
-				<div>简历列表</div>
+				<div>学生列表</div>
 				<div class="flex gap-2 items-center">
-					 <el-button type="primary" v-if="userStore?.userinfo?.userRole === 'student'" @click="handleCreateVisible(true)">新建</el-button>
+					 <el-button type="primary" v-if="userStore?.userinfo?.userRole === 'enterprise'" @click="handleCreateVisible(true)">新建</el-button>
 					<el-icon size="20" @click="getList">
 						<RefreshRight />
 					</el-icon>
@@ -31,15 +29,10 @@
 			<el-table :data="tableData" style="width: 100%" :cell-style="{textAlign: 'center'}"
 				:header-cell-style="{textAlign: 'center',backgroundColor: '#f5f7fa'}" empty-text="暂无数据">
 				<el-table-column type="index" width="50" />
-				<el-table-column prop="userName" label="创建人" v-if="userInfo?.userRole !== 'student'" />
-				<el-table-column prop="fileName" label="简历名称" />
-
-				<el-table-column prop="isActive" label="是否生效版本">
-					<template #default="scope">
-						<el-tag type="warning" effect="dark" v-if="scope.row.isActive === 0">否</el-tag>
-						<el-tag type="success" effect="dark" v-if="scope.row.isActive === 1">是</el-tag>
-					</template>
-				</el-table-column>
+				<el-table-column prop="enterprise.enterpriseName" label="企业名称" v-if="userInfo?.userRole !== 'enterprise'" />
+				<el-table-column prop="fileName" label="资质名称" />
+				<el-table-column prop="certType" label="资质类型" />
+ 
 				<el-table-column prop="remark" label="备注" />
 				<el-table-column prop="createTime" label="创建时间" />
 				<el-table-column prop="updateTime" label="更新时间" />
@@ -49,9 +42,9 @@
 						<el-button @click="openFile(scope.row)" v-if="scope.row.status !== 0" link type="primary" size="small" >
 							查看
 						</el-button>
-						<el-button @click="openModal(scope.row, '修改')" v-if="userInfo?.userRole === 'student'" link type="primary" size="small">修改</el-button>
+						<el-button @click="openModal(scope.row, '修改')" v-if="userInfo?.userRole === 'enterprise'" link type="primary" size="small">修改</el-button>
 
-						<el-button v-if="scope.row.status === 1" link type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
+						<el-button v-if="userInfo?.userRole === 'enterprise'" link type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -61,19 +54,19 @@
 				</el-pagination>
 			</div>
 		</el-card>
-    <UpdateResumeModal :visible="visible" :cancel="(value) => handleVisible(value)" @submit="getList" :formData="currentRow" />
-		<CreateResumeModal :visible="createVisible"  :cancel="(value) => handleCreateVisible(value)" @submit="getList"  />
+    <UpdateCertificationModal :visible="visible" :cancel="(value) => handleVisible(value)" @submit="getList" :formData="currentRow" />
+		<CreatCertificationModal :visible="createVisible"  :cancel="(value) => handleCreateVisible(value)" @submit="getList"  />
 	</div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { resumeList, deleteResume } from '@/api/student'
+import { certificationList, deleteCertification } from '@/api/enterprise'
 
 import { RefreshRight } from '@element-plus/icons-vue' 
 import { useUserStore } from "@/stores/modules/user.js";
-import CreateResumeModal from "@/views/student/components/CreateResumeModal.vue";
-import UpdateResumeModal from './components/UpdateResumeModal.vue';
+import CreatCertificationModal from "@/views/enterprise/components/CreatCertificationModal.vue";
+import UpdateCertificationModal from './components/UpdateCertificationModal.vue';
 const userStore = useUserStore()
 const userInfo = userStore.userinfo
 
@@ -82,7 +75,7 @@ const total = ref(0)
 const queryParams = ref({
 	fileName: '',
 	remark: '',
-	isActive: null,
+	certType: '',
 	userName: null,
 	current: 1,
 	pageSize: 10
@@ -100,7 +93,7 @@ const handleCreateVisible = (val) => {
 }
 
 const getList = async () => {
-	const { data } = await resumeList(queryParams.value)
+	const { data } = await certificationList(queryParams.value)
 	tableData.value = data.records
 	total.value = Number(data.total)
 	console.log(tableData.value, 'tableData.value');
@@ -126,14 +119,14 @@ const openFile = (row) => {
 const handleDelete = (row) => {
 	console.log(row, 'row');
   ElMessageBox.confirm(
-    '确定删除这个简历吗?',
+    '确定删除这个企业资质吗?',
     '提示',
     {
       type: 'warning',
     }
   )
     .then(async () => {
-     await deleteResume({id: row.id})
+     await deleteCertification({id: row.id})
       ElMessage.success('删除成功')
       getList()
     })

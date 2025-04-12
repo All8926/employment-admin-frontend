@@ -1,11 +1,11 @@
 <template>
 	<el-dialog :model-value="visible" @update:model-value="updateVisible" :title="title" width="35%">
 		<el-form :model="form" label-width="100px">
-			<el-form-item label="上传简历">
+			<el-form-item label="上传新的简历">
 				<el-upload ref="uploadRef" action="string" :http-request="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed"
 					:before-upload="beforeUpload" :limit="1" style="width: 100%;">
 					<template #trigger>
-						<el-button type="primary">select file</el-button>
+						<el-button type="primary">选择文件</el-button>
 					</template>
 					<template #tip>
 						<div class="el-upload__tip">只能上传pdf文件，且不超过2M</div>
@@ -44,7 +44,7 @@
 <script setup>
 import { ref, defineProps, defineEmits, computed } from 'vue'
 import { useUserStore } from '@/stores/modules/user'
-import { addResume } from '@/api/student'
+import { updateResume } from '@/api/student'
 import { uploadFile } from '@/api/index'
 
 const userStore = useUserStore()
@@ -55,7 +55,7 @@ const props = defineProps({
 	},
 	title: {
 		type: String,
-		default: '新增'
+		default: '修改'
 	},
 
 	cancel: {
@@ -64,17 +64,23 @@ const props = defineProps({
 
 		}
 	},
+	formData: {
+		type: Object,
+		default: () => {
+			return {
+				fileName: '',
+				isActive: 0,
+				remark: '',
+				filePath: '',
+			}
+		}
+	},
 })
 
-const form = ref({
-	fileName: '',
-	isActive: 0,
-	remark: '',
-})
+const form = computed(() => props.formData)
 
 const resumeFile = ref(null)
 const uploadRef = ref(null)
-
 
 const emit = defineEmits(['submit'])
 
@@ -86,9 +92,6 @@ const updateVisible = (value) => {
 const handleSubmit = async () => {
 	if (!form.value.fileName) {
 		return ElMessage.error('请输入简历名称')
-	}
-	if (!resumeFile.value) {
-		return ElMessage.error('请上传简历')
 
 	}
 	try {
@@ -97,10 +100,10 @@ const handleSubmit = async () => {
 			let filePath = res.data
 			form.value.filePath = filePath
 		}
-		await addResume(form.value)
+		await updateResume(form.value)
 		ElMessage.success('操作成功')
 		updateVisible(false)
-    	resetForm()
+		resetForm()
 		emit('submit')
 	} catch (error) {
 		console.log(error)
@@ -149,10 +152,9 @@ const resetForm = () => {
 		fileName: '',
 		isActive: 0,
 		remark: '',
-    filePath: ''
 	}
-  uploadRef.value.clearFiles()
 	resumeFile.value = null
+	uploadRef.value.clearFiles()
 }
 
 

@@ -1,7 +1,7 @@
 <template>
 	<el-dialog :model-value="visible" @update:model-value="updateVisible" :title="title" width="35%">
 		<el-form :model="form" label-width="100px">
-			<el-form-item label="上传简历">
+			<el-form-item label="上传资质">
 				<el-upload ref="uploadRef" action="string" :http-request="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed"
 					:before-upload="beforeUpload" :limit="1" style="width: 100%;">
 					<template #trigger>
@@ -14,15 +14,11 @@
 			</el-form-item>
 
 			<el-form-item label="名称">
-				<el-input v-model="form.fileName" placeholder="请输入简历名称"></el-input>
+				<el-input v-model="form.fileName" placeholder="请输入资质名称"></el-input>
 			</el-form-item>
-
-			<el-form-item label="是否生效版本">
-				<el-select v-model="form.isActive" placeholder="请选择">
-					<el-option label="否" :value="0"></el-option>
-					<el-option label="是" :value="1"></el-option>
-				</el-select>
-			</el-form-item>
+			<el-form-item label="类型">
+				<el-input v-model="form.certType" placeholder="请输入资质类型"></el-input>
+			</el-form-item> 
 
 			<el-form-item label="备注">
 				<el-input v-model="form.remark" type="textarea" />
@@ -44,7 +40,7 @@
 <script setup>
 import { ref, defineProps, defineEmits, computed } from 'vue'
 import { useUserStore } from '@/stores/modules/user'
-import { addResume } from '@/api/student'
+import { addCertification } from '@/api/enterprise'
 import { uploadFile } from '@/api/index'
 
 const userStore = useUserStore()
@@ -67,8 +63,9 @@ const props = defineProps({
 })
 
 const form = ref({
+	filePath: '',
 	fileName: '',
-	isActive: 0,
+	certType: '',
 	remark: '',
 })
 
@@ -85,19 +82,19 @@ const updateVisible = (value) => {
 // 提交
 const handleSubmit = async () => {
 	if (!form.value.fileName) {
-		return ElMessage.error('请输入简历名称')
+		return ElMessage.error('请输入资质名称')
 	}
 	if (!resumeFile.value) {
-		return ElMessage.error('请上传简历')
+		return ElMessage.error('请上传资质')
 
 	}
 	try {
 		if (resumeFile.value) {
-			const res = await uploadFile(resumeFile.value, 'user_resume')
+			const res = await uploadFile(resumeFile.value, 'enterprise_certificate')
 			let filePath = res.data
 			form.value.filePath = filePath
 		}
-		await addResume(form.value)
+		await addCertification(form.value)
 		ElMessage.success('操作成功')
 		updateVisible(false)
     	resetForm()
@@ -127,12 +124,18 @@ const handleSuccess = async (res) => {
 	form.value.fileName = file.name
 }
 
+// 校验文件格式
+const checkFileFormat = (fileName) => {
+	const validFormats = ['jpg', 'jpeg', 'png','pdf'];
+	const fileExtension = fileName.split('.').pop().toLowerCase();
+	return validFormats.includes(fileExtension);
+}
 
 // 上传前校验
 const beforeUpload = (rawFile) => {
 	console.log(rawFile);
 
-	if (rawFile.type !== 'application/pdf') {
+	if (!checkFileFormat(rawFile.name)) {
 		ElMessage.error('文件格式不正确!')
 		return false
 	}

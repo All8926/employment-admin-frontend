@@ -16,6 +16,10 @@
     <div v-if="userinfo?.userRole != 'student'">职务：<span>{{userinfo?.job || '-'}}</span></div>
     <div v-if="userinfo?.userRole == 'tracher'">学历：<span>{{userinfo?.qualification || '-'}}</span></div>
    <div v-if="userinfo?.userRole == 'enterprise'">企业名称：<span>{{ userinfo?.enterpriseName || '-'}}</span></div>
+   <div v-if="userinfo?.userRole == 'enterprise'">办公地址：<span>{{ userinfo?.address || '-'}}</span></div>
+   <div v-if="userinfo?.userRole == 'enterprise'">所属行业：<span>{{ userinfo?.industry || '-'}}</span></div>
+   <div v-if="userinfo?.userRole == 'enterprise'">统一社会信用代码：<span>{{ userinfo?.licenseNum || '-'}}</span></div>
+   <div v-if="userinfo?.userRole == 'enterprise'">经营范围：<span>{{ userinfo?.businessScope || '-'}}</span></div>
     <div>创建时间：<span>{{ userinfo?.createTime }}</span></div>
      <div  >简介：<span>{{userinfo?.userProfile || '-'}}</span></div>
 	</div>

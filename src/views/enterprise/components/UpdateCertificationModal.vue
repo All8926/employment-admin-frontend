@@ -1,11 +1,11 @@
 <template>
 	<el-dialog :model-value="visible" @update:model-value="updateVisible" :title="title" width="35%">
 		<el-form :model="form" label-width="100px">
-			<el-form-item label="上传简历">
+			<el-form-item label="上传新的资质">
 				<el-upload ref="uploadRef" action="string" :http-request="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed"
 					:before-upload="beforeUpload" :limit="1" style="width: 100%;">
 					<template #trigger>
-						<el-button type="primary">select file</el-button>
+						<el-button type="primary">选择文件</el-button>
 					</template>
 					<template #tip>
 						<div class="el-upload__tip">只能上传pdf文件，且不超过2M</div>
@@ -14,15 +14,12 @@
 			</el-form-item>
 
 			<el-form-item label="名称">
-				<el-input v-model="form.fileName" placeholder="请输入简历名称"></el-input>
+				<el-input v-model="form.fileName" placeholder="请输入资质名称"></el-input>
 			</el-form-item>
-
-			<el-form-item label="是否生效版本">
-				<el-select v-model="form.isActive" placeholder="请选择">
-					<el-option label="否" :value="0"></el-option>
-					<el-option label="是" :value="1"></el-option>
-				</el-select>
+			<el-form-item label="类型">
+				<el-input v-model="form.certType" placeholder="请输入资质类型"></el-input>
 			</el-form-item>
+ 
 
 			<el-form-item label="备注">
 				<el-input v-model="form.remark" type="textarea" />
@@ -44,7 +41,7 @@
 <script setup>
 import { ref, defineProps, defineEmits, computed } from 'vue'
 import { useUserStore } from '@/stores/modules/user'
-import { addResume } from '@/api/student'
+import { updateCertification } from '@/api/enterprise'
 import { uploadFile } from '@/api/index'
 
 const userStore = useUserStore()
@@ -55,7 +52,7 @@ const props = defineProps({
 	},
 	title: {
 		type: String,
-		default: '新增'
+		default: '修改'
 	},
 
 	cancel: {
@@ -64,17 +61,23 @@ const props = defineProps({
 
 		}
 	},
+	formData: {
+		type: Object,
+		default: () => {
+			return {
+				fileName: '',
+				certType: 0,
+				remark: '',
+				filePath: '',
+			}
+		}
+	},
 })
 
-const form = ref({
-	fileName: '',
-	isActive: 0,
-	remark: '',
-})
+const form = computed(() => props.formData)
 
 const resumeFile = ref(null)
 const uploadRef = ref(null)
-
 
 const emit = defineEmits(['submit'])
 
@@ -85,22 +88,19 @@ const updateVisible = (value) => {
 // 提交
 const handleSubmit = async () => {
 	if (!form.value.fileName) {
-		return ElMessage.error('请输入简历名称')
-	}
-	if (!resumeFile.value) {
-		return ElMessage.error('请上传简历')
+		return ElMessage.error('请输入资质名称')
 
 	}
 	try {
 		if (resumeFile.value) {
-			const res = await uploadFile(resumeFile.value, 'user_resume')
+			const res = await uploadFile(resumeFile.value, 'enterprise_certificate')
 			let filePath = res.data
 			form.value.filePath = filePath
 		}
-		await addResume(form.value)
+		await updateCertification(form.value)
 		ElMessage.success('操作成功')
 		updateVisible(false)
-    	resetForm()
+		resetForm()
 		emit('submit')
 	} catch (error) {
 		console.log(error)
@@ -127,13 +127,18 @@ const handleSuccess = async (res) => {
 	form.value.fileName = file.name
 }
 
+// 校验文件格式
+const checkFileFormat = (fileName) => {
+	const validFormats = ['jpg', 'jpeg', 'png','pdf'];
+	const fileExtension = fileName.split('.').pop().toLowerCase();
+	return validFormats.includes(fileExtension);
+}
 
 // 上传前校验
 const beforeUpload = (rawFile) => {
 	console.log(rawFile);
-
-	if (rawFile.type !== 'application/pdf') {
-		ElMessage.error('文件格式不正确!')
+	if (!checkFileFormat(rawFile.name)) {
+		ElMessage.error('文件格式不正确！')
 		return false
 	}
 	if (rawFile.size / 1024 / 1024 > 2) {
@@ -149,10 +154,9 @@ const resetForm = () => {
 		fileName: '',
 		isActive: 0,
 		remark: '',
-    filePath: ''
 	}
-  uploadRef.value.clearFiles()
 	resumeFile.value = null
+	uploadRef.value.clearFiles()
 }
 
 

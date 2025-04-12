@@ -76,7 +76,15 @@ export const routes = [
             {
                 path: '/enterprise/list',
                 name: '企业列表',
-                component: () => import('@/views/enterprise/list.vue')
+                component: () => import('@/views/enterprise/enterprise.vue')
+            },
+            {
+                path: '/enterprise/certification',
+                name: '资质管理',
+                meta: {
+                    userRole: ["enterprise","admin","teacher"],
+                },
+                component: () => import('@/views/enterprise/certification.vue'),
             }
         ]
     },

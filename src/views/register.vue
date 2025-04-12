@@ -1,5 +1,5 @@
 <template>
-	<div class="w-[30%] m-auto mt-[50px]">
+	<div class="w-[35%] m-auto mt-[50px]">
 		<el-tabs type="border-card">
 			<el-tab-pane label="学生注册">
 				<el-form :model="studentForm" ref="studentFormRef" :rules="studentRules" label-width="120px">
@@ -41,7 +41,7 @@
 				</el-form>
 			</el-tab-pane>
 			<el-tab-pane label="企业注册">
-				<el-form :model="enterpriseForm" ref="enterpriseFormRef" :rules="enterpriseRules" label-width="120px">
+				<el-form :model="enterpriseForm" ref="enterpriseFormRef" :rules="enterpriseRules" label-width="140px">
 					<el-form-item label="账号" prop="userAccount">
 						<el-input v-model="enterpriseForm.userAccount" />
 					</el-form-item>
@@ -57,19 +57,21 @@
 							<el-radio :label="1">女</el-radio>
 						</el-radio-group>
 					</el-form-item>
-
-					<el-form-item label="企业名称" prop="enterpriseName">
-						<el-input v-model="enterpriseForm.enterpriseName" />
-					</el-form-item>
-
 					<el-form-item label="手机号" prop="phone">
 						<el-input v-model="enterpriseForm.phone" />
 					</el-form-item>
-					<el-form-item label="邮箱" prop="email">
-						<el-input v-model="enterpriseForm.email" />
+					<el-form-item label="企业名称" prop="enterpriseName">
+						<el-input v-model="enterpriseForm.enterpriseName" />
 					</el-form-item>
-					<el-form-item label="用户简介" prop="userProfile">
-						<el-input type="textarea" v-model="enterpriseForm.userProfile" />
+			
+					<el-form-item label="职务" prop="job">
+						<el-input v-model="enterpriseForm.job" />
+					</el-form-item>
+					<el-form-item label="统一社会信用代码" prop="licenseNum">
+						<el-input v-model="enterpriseForm.licenseNum" />
+					</el-form-item>
+					<el-form-item label="办公地址" prop="address">
+						<el-input v-model="enterpriseForm.address" />
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="submitEnterpriseForm">注册</el-button>
@@ -109,9 +111,9 @@ const enterpriseForm = ref({
 	userName: '企业1',
 	gender: 0,
 	enterpriseName: '百度科技有限公司',
-	phone: '',
-	email: '',
-	userProfile: ''
+	job: '',
+	licenseNum: '',
+	address: ''
 })
 const studentFormRef = ref(null)
 const enterpriseFormRef = ref(null)
@@ -127,6 +129,8 @@ const enterpriseRules = {
 	userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
 	userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
 	enterpriseName: [{ required: true, message: '企业名称不能为空', trigger: 'blur' }], 
+	licenseNum: [{ required: true, message: '统一社会信用代码不能为空', trigger: 'blur' }], 
+	address: [{ required: true, message: '办公地址不能为空', trigger: 'blur' }], 
 }
 
 const treeData = ref([])

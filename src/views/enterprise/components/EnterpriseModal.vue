@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :model-value="visible"  @update:model-value="updateVisible" :title="title" width="500">
-    <el-form :model="form" :disabled="disabled" label-width="80px">
+  <el-dialog :model-value="visible"  @update:model-value="updateVisible" :title="title" width="40%">
+    <el-form :model="form" :disabled="disabled" label-width="140px">
       <el-form-item label="姓名">
         <el-input v-model="form.userName" placeholder="请输入姓名"></el-input>
       </el-form-item>
@@ -20,7 +20,18 @@
       <el-form-item label="电话">
         <el-input v-model="form.phone" placeholder="请输入电话"></el-input>
       </el-form-item>
- 
+      <el-form-item label="统一社会信用代码" >
+				<el-input v-model="form.licenseNum" placeholder="请输入统一社会信用代码"></el-input>
+			</el-form-item>
+			<el-form-item label="办公地址" >
+				<el-input v-model="form.address" placeholder="请输入办公地址"></el-input>
+			</el-form-item>
+			<el-form-item label="经营范围" >
+				<el-input v-model="form.businessScope" placeholder="请输入经营范围"></el-input>
+			</el-form-item>
+			<el-form-item label="所属行业" >
+				<el-input v-model="form.industry" placeholder="请输入所属行业"></el-input>
+			</el-form-item>
       <el-form-item label="简介" >
       <el-input v-model="form.userProfile" type="textarea" />
     </el-form-item>
