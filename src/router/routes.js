@@ -26,6 +26,14 @@ export const routes = [
         component: () => import('@/views/department/index.vue'),
     },
     {
+        path: '/contract',
+        name: '合同管理',
+        meta: {
+            icon: 'Files',
+        },
+        component: () => import('@/views/contract/contract.vue'),
+    },
+    {
         path: '/user',
         name: '个人页',
         redirect: '/user/index',

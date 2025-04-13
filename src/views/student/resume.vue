@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col gap-4">
 		<el-card shadow="never">
-			<el-form :model="queryParams" inline class="form-inline"> 
+			<el-form :model="queryParams" inline class="form-inline">
 				<el-form-item label="名称">
 					<el-input v-model="queryParams.fileName" placeholder="请输入简历名称"></el-input>
 				</el-form-item>
@@ -46,12 +46,12 @@
 
 				<el-table-column fixed="right" label="操作" min-width="120">
 					<template #default="scope">
-						<el-button @click="openFile(scope.row)" v-if="scope.row.status !== 0" link type="primary" size="small" >
+						<el-button @click="openFile(scope.row)" v-if="scope.row.status !== 0" link type="primary"  >
 							查看
 						</el-button>
-						<el-button @click="openModal(scope.row, '修改')" v-if="userInfo?.userRole === 'student'" link type="primary" size="small">修改</el-button>
+						<el-button @click="openModal(scope.row, '修改')" v-if="userInfo?.userRole === 'student'" link type="primary" >修改</el-button>
 
-						<el-button v-if="scope.row.status === 1" link type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
+						<el-button v-if="scope.row.status === 1" link type="danger"  @click="handleDelete(scope.row)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -70,7 +70,7 @@
 import { ref } from 'vue'
 import { resumeList, deleteResume } from '@/api/student'
 
-import { RefreshRight } from '@element-plus/icons-vue' 
+import { RefreshRight } from '@element-plus/icons-vue'
 import { useUserStore } from "@/stores/modules/user.js";
 import CreateResumeModal from "@/views/student/components/CreateResumeModal.vue";
 import UpdateResumeModal from './components/UpdateResumeModal.vue';

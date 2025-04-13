@@ -72,5 +72,13 @@ export const deleteCertification = (data) => {
   })
 }
 
+// 审核资质
+export const auditCertification = (data) => {
+  return http.request({
+    url: '/enterprise/certification/audit',
+    method: 'post',
+    data,
+  })
+}
 
- 
+

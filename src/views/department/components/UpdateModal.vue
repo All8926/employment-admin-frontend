@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, computed } from 'vue'
+import {ref, defineProps, defineEmits, computed, watch} from 'vue'
 import { useUserStore } from '@/stores/modules/user'
 import {addDepartment, updateDepartment} from '@/api/department.js'
 const userStore = useUserStore()
@@ -59,7 +59,14 @@ const props = defineProps({
 })
 
 const disabled = computed(() => props.title !==  '修改')
-const form = computed(() => props.formData)
+const form = ref({...props.formData})
+watch(
+    () => props.formData,
+    (newVal) => {
+        form.value = { ...newVal}
+    },
+    { deep: true, immediate: true }
+)
 const treeData = userStore?.departmentDate
 
 const rules = {

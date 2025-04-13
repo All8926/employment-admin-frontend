@@ -37,7 +37,7 @@
 		</el-card>
 		<el-card shadow="never">
 			<div class="flex justify-between items-center mb-[20px]">
-				<div>企业员工列表</div>
+				<div>企业列表</div>
 				<div class="flex gap-2 items-center">
 					<!-- <el-button type="primary">新建</el-button> -->
 					<el-icon size="20" @click="getList">
@@ -76,17 +76,17 @@
 				<el-table-column fixed="right" label="操作" min-width="120">
 					<template #default="scope">
 						<el-button @click="openModal(scope.row, '详情')" v-if="scope.row.status !== 0" link type="primary"
-							size="small">
+							>
 							详情
 						</el-button>
 						<el-button @click="openModal(scope.row, '审核')" v-if="scope.row.status === 0" link type="warning"
-							size="small">
+							>
 							审核
 						</el-button>
 						<el-button @click="openModal(scope.row, '修改')" v-if="scope.row.status === 1" link type="primary"
-							size="small">修改</el-button>
+							>修改</el-button>
 
-						<el-button v-if="scope.row.status === 1" link type="danger" size="small"
+						<el-button v-if="scope.row.status === 1" link type="danger"
 							@click="handleDelete(scope.row)">删除</el-button>
 					</template>
 				</el-table-column>

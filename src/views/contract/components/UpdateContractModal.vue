@@ -1,7 +1,7 @@
 <template>
 	<el-dialog :model-value="visible" @update:model-value="updateVisible" :title="title" width="35%">
-		<el-form :model="form" label-width="100px">
-			<el-form-item label="上传新的简历">
+		<el-form :model="form" label-width="120px"   :rules="rules">
+			<el-form-item label="上传新的合同" required>
 				<el-upload ref="uploadRef" action="string" :http-request="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed"
 					:before-upload="beforeUpload" :limit="1" style="width: 100%;">
 					<template #trigger>
@@ -13,21 +13,22 @@
 				</el-upload>
 			</el-form-item>
 
-			<el-form-item label="名称">
-				<el-input v-model="form.fileName" placeholder="请输入简历名称"></el-input>
+			<el-form-item label="名称" prop="fileName"  >
+				<el-input v-model="form.fileName" placeholder="请输入合同名称"></el-input>
 			</el-form-item>
 
-			<el-form-item label="是否生效版本">
-				<el-select v-model="form.isActive" placeholder="请选择">
-					<el-option label="否" :value="0"></el-option>
-					<el-option label="是" :value="1"></el-option>
-				</el-select>
+			<el-form-item label="签约日期" prop="signDate">
+				<el-date-picker
+						v-model="form.signDate"
+						type="date"
+						placeholder="请选择签约日期"
+						value-format="YYYY-MM-DD"
+				/>
 			</el-form-item>
 
 			<el-form-item label="备注">
 				<el-input v-model="form.remark" type="textarea" />
 			</el-form-item>
-
 		</el-form>
 		<template #footer>
 			<div class="dialog-footer">
@@ -42,9 +43,9 @@
 </template>
 
 <script setup>
-import {ref, defineProps, defineEmits, computed, watch} from 'vue'
+import { ref, defineProps, defineEmits, watch } from 'vue'
 import { useUserStore } from '@/stores/modules/user'
-import { updateResume } from '@/api/student'
+import { updateContract } from '@/api//contract.js'
 import { uploadFile } from '@/api/index'
 
 const userStore = useUserStore()
@@ -69,9 +70,9 @@ const props = defineProps({
 		default: () => {
 			return {
 				fileName: '',
-				isActive: 0,
-				remark: '',
 				filePath: '',
+				signDate: '',
+				remark: '',
 			}
 		}
 	},
@@ -86,7 +87,7 @@ watch(
 		{ deep: true, immediate: true }
 )
 
-const resumeFile = ref(null)
+const contractFile = ref(null)
 const uploadRef = ref(null)
 
 const emit = defineEmits(['submit'])
@@ -95,19 +96,29 @@ const updateVisible = (value) => {
 	props.cancel(value)
 }
 
+const rules = {
+	fileName: [
+		{ required: true, message: '请输入合同名称', trigger: 'blur' },
+	],
+	signDate: [
+		{ required: true, message: '请选择签约日期', trigger: 'blur' },
+	],
+
+}
+
 // 提交
 const handleSubmit = async () => {
 	if (!form.value.fileName) {
-		return ElMessage.error('请输入简历名称')
+		return ElMessage.error('请输入合同名称')
 
 	}
 	try {
-		if (resumeFile.value) {
-			const res = await uploadFile(resumeFile.value, 'user_resume')
+		if (contractFile.value) {
+			const res = await uploadFile(contractFile.value, 'contract_file')
 			let filePath = res.data
 			form.value.filePath = filePath
 		}
-		await updateResume(form.value)
+		await updateContract(form.value)
 		ElMessage.success('操作成功')
 		updateVisible(false)
 		resetForm()
@@ -124,7 +135,7 @@ const handleExceed = (files) => {
 
 // 文件删除
 const handleRemove = (file, fileList) => {
-	resumeFile.value = null
+	contractFile.value = null
 }
 
 // 上传成功
@@ -133,7 +144,7 @@ const handleSuccess = async (res) => {
 	let file = res.file
 	let requestFile = new FormData()
 	requestFile.append('file', file)
-	resumeFile.value = requestFile
+	contractFile.value = requestFile
 	form.value.fileName = file.name
 }
 
@@ -160,7 +171,7 @@ const resetForm = () => {
 		isActive: 0,
 		remark: '',
 	}
-	resumeFile.value = null
+	contractFile.value = null
 	uploadRef.value.clearFiles()
 }
 

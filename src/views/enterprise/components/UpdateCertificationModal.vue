@@ -19,7 +19,7 @@
 			<el-form-item label="类型">
 				<el-input v-model="form.certType" placeholder="请输入资质类型"></el-input>
 			</el-form-item>
- 
+
 
 			<el-form-item label="备注">
 				<el-input v-model="form.remark" type="textarea" />
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, computed } from 'vue'
+import {ref, defineProps, defineEmits, computed, watch} from 'vue'
 import { useUserStore } from '@/stores/modules/user'
 import { updateCertification } from '@/api/enterprise'
 import { uploadFile } from '@/api/index'
@@ -74,7 +74,14 @@ const props = defineProps({
 	},
 })
 
-const form = computed(() => props.formData)
+const form = ref({...props.formData})
+watch(
+		() => props.formData,
+		(newVal) => {
+			form.value = { ...newVal}
+		},
+		{ deep: true, immediate: true }
+)
 
 const resumeFile = ref(null)
 const uploadRef = ref(null)

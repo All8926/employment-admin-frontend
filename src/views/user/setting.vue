@@ -44,6 +44,9 @@
 				<el-tree-select placeholder="请选择部门" v-model="form.deptId" :data="treeData"
 					:props="{ value: 'id', label: 'name' }" node-key="id" />
 			</el-form-item>
+			<el-form-item label="企业名称" v-if="form?.userRole == 'enterprise'">
+				<el-input v-model="form.enterpriseName" placeholder="请输入企业名称"></el-input>
+			</el-form-item>
 			<el-form-item label="统一社会信用代码" v-if="form?.userRole == 'enterprise'">
 				<el-input v-model="form.licenseNum" placeholder="请输入统一社会信用代码"></el-input>
 			</el-form-item>
@@ -91,7 +94,7 @@ const handleSubmit = async () => {
 		userStore?.getUserInfo()
 		formData.value = null
 		ElMessage.success('修改成功')
-		
+
 	} catch (error) {
 		console.log(error)
 	}
