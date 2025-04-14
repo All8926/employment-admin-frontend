@@ -54,9 +54,15 @@ export const uploadFile = (data,biz) => {
   return http.request({
     url: '/file/upload?biz='+biz,
     method: 'post',
-    data,
-    // headers: {
-    //   'Content-Type': 'multipart/form-data'
-    // }
+    data
+  })
+}
+
+// 审核记录
+export const auditLogList = (data) => {
+  return http.request({
+    url: '/audit/list/page',
+    method: 'post',
+    data
   })
 }

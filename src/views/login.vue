@@ -1,6 +1,7 @@
 <template>
-	<div class="w-[30%] m-auto mt-[200px]">
-		<el-form :model="form" ref="formRef" :rules="rules" label-width="120px">
+	<div class="w-[20%] m-auto mt-[100px]">
+		<div class="text-center text-3xl mb-[50px]">就业信息管理系统</div>
+		<el-form :model="form" ref="formRef" :rules="rules" label-width="auto" size="large">
 			<el-form-item label="账号" prop="userAccount">
 				<el-input v-model="form.userAccount" />
 			</el-form-item>
@@ -14,11 +15,13 @@
 					<el-radio value="enterprise">企业</el-radio>
 				</el-radio-group>
 			</el-form-item>
-
-			<el-form-item>
-				<el-button type="primary" @click="handleLogin">登录</el-button>
-				<el-button @click="toRegister">前往注册</el-button>
-			</el-form-item>
+			<div class="mb-[15px] text-[12px] text-[#999999]">提示：管理员账号为admin/123456，选择教师</div>
+			<div class="mb-[15px]">
+				<el-button style="width: 100%;"   type="primary" @click="handleLogin">登录</el-button>
+			</div> 
+			<div>
+				<el-button style="width: 100%;" @click="toRegister">前往注册</el-button>
+			</div>
 		</el-form>
 	</div>
 </template>

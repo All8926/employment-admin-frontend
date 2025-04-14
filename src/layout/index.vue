@@ -2,7 +2,7 @@
 	<el-container v-if="isLayout === false" class="layout-container-demo">
 
 		<el-header class="flex justify-between items-center ">
-			<div>管理系统</div>
+			<div class=" text-[20px]">就业信息管理系统</div>
 			<div>
 
 				<el-dropdown>

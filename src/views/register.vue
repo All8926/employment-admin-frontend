@@ -1,5 +1,6 @@
 <template>
 	<div class="w-[35%] m-auto mt-[50px]">
+		<div class="text-center text-3xl mb-[50px]">就业信息管理系统</div>
 		<el-tabs type="border-card">
 			<el-tab-pane label="学生注册">
 				<el-form :model="studentForm" ref="studentFormRef" :rules="studentRules" label-width="120px">
@@ -27,10 +28,7 @@
 					</el-form-item>
 					<el-form-item label="手机号" prop="phone">
 						<el-input v-model="studentForm.phone" />
-					</el-form-item>
-					<el-form-item label="邮箱" prop="email">
-						<el-input v-model="studentForm.email" />
-					</el-form-item>
+					</el-form-item> 
 					<el-form-item label="用户简介" prop="userProfile">
 						<el-input type="textarea" v-model="studentForm.userProfile" />
 					</el-form-item>
@@ -79,6 +77,45 @@
 					</el-form-item>
 				</el-form>
 			</el-tab-pane>
+			<el-tab-pane label="教师注册">
+				<el-form :model="teacherForm" ref="teacherFormRef" :rules="teacherRules" label-width="120px">
+					<el-form-item label="账号" prop="userAccount">
+						<el-input v-model="teacherForm.userAccount" />
+					</el-form-item>
+					<el-form-item label="密码" prop="userPassword">
+						<el-input type="password" v-model="teacherForm.userPassword" />
+					</el-form-item>
+					<el-form-item label="姓名" prop="userName">
+						<el-input v-model="teacherForm.userName" />
+					</el-form-item>
+					<el-form-item label="性别" prop="gender">
+						<el-radio-group v-model="teacherForm.gender">
+							<el-radio :label="0">男</el-radio>
+							<el-radio :label="1">女</el-radio>
+						</el-radio-group>
+					</el-form-item>
+					<el-form-item label="编号" prop="teacherNumber">
+						<el-input v-model="teacherForm.teacherNumber" />
+					</el-form-item>
+					<el-form-item label="部门" prop="deptId">
+						<el-tree-select check-strictly placeholder="请选择部门" v-model="teacherForm.deptId" :data="treeData"
+							:props="{ value: 'id', label: 'name' }" node-key="id" />
+					</el-form-item>
+					<el-form-item label="职务" prop="job">
+						<el-input v-model="enterpriseForm.job" />
+					</el-form-item>
+					<el-form-item label="手机号" prop="phone">
+						<el-input v-model="teacherForm.phone" />
+					</el-form-item> 
+					<el-form-item label="用户简介" prop="userProfile">
+						<el-input type="textarea" v-model="teacherForm.userProfile" />
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="submitTeacherForm">注册</el-button>
+						<el-button @click="backLogin">返回登录</el-button>
+					</el-form-item>
+				</el-form>
+			</el-tab-pane>
 		</el-tabs>
 
 	</div>
@@ -90,33 +127,47 @@ import { departmentTree } from '@/api/department'
 import { ElMessage } from 'element-plus'
 import { studentRegister } from '@/api/student'
 import { enterpriseRegister } from '@/api/enterprise'
+import { teacherRegister } from '@/api/teacher'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
 const studentForm = ref({
-	userAccount: 'qqq1',
-	userPassword: '123456',
-	userName: '学生1',
+	userAccount: '',
+	userPassword: '',
+	userName: '',
 	gender: 0,
-	studentNumber: '2025125296552',
+	studentNumber: '',
 	deptId: null,
-	phone: '',
-	email: '',
+	phone: '', 
 	userProfile: ''
 })
 const enterpriseForm = ref({
-	userAccount: '1',
-	userPassword: '123456',
-	userName: '企业1',
+	userAccount: '',
+	userPassword: '',
+	userName: '',
 	gender: 0,
-	enterpriseName: '百度科技有限公司',
+	enterpriseName: '',
 	job: '',
 	licenseNum: '',
 	address: ''
 })
+
+const teacherForm = ref({
+	userAccount: '',
+	userPassword: '',
+	userName: '',
+	gender: 0,
+	teacherNumber: '',
+	deptId: null,
+	job: '',
+	phone: '', 
+	userProfile: ''
+})
+
 const studentFormRef = ref(null)
 const enterpriseFormRef = ref(null)
+const teacherFormRef = ref(null)
 
 const studentRules = {
 	userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
@@ -131,6 +182,13 @@ const enterpriseRules = {
 	enterpriseName: [{ required: true, message: '企业名称不能为空', trigger: 'blur' }], 
 	licenseNum: [{ required: true, message: '统一社会信用代码不能为空', trigger: 'blur' }], 
 	address: [{ required: true, message: '办公地址不能为空', trigger: 'blur' }], 
+}
+
+const teacherRules = {
+	userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
+	userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
+	teacherNumber: [{ required: true, message: '编号不能为空', trigger: 'blur' }],
+	deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }]
 }
 
 const treeData = ref([])
@@ -157,7 +215,7 @@ const submitStudentForm = () => {
 				// 跳转到登录页面
 				router.push('/login')
 			} catch (error) {
-				ElMessage.error('注册失败')
+				console.log(error);
 			}
 		} else {
 			ElMessage.error('请填写完整信息')
@@ -175,7 +233,7 @@ const submitEnterpriseForm = () => {
 				// 跳转到登录页面
 				router.push('/login')
 			} catch (error) {
-				ElMessage.error('注册失败')
+				console.log(error);
 			}
 		} else {
 			ElMessage.error('请填写完整信息')
@@ -183,6 +241,24 @@ const submitEnterpriseForm = () => {
 	})
 }
 
+// 教师注册提交
+const submitTeacherForm = () => {
+	teacherFormRef.value.validate(async valid => {
+		if (valid) {
+			try {
+				const res = await teacherRegister(teacherForm.value)
+				ElMessage.success('注册成功')
+				// 跳转到登录页面
+				router.push('/login')
+			} catch (error) { 
+				console.log(error);
+				
+			}
+		} else {
+			ElMessage.error('请填写完整信息')
+		}
+	})
+}
 
 
 const backLogin = () => {

@@ -54,7 +54,7 @@
 						<el-button @click="openFile(scope.row)"  link type="primary"  >
 							查看
 						</el-button>
-						<el-button @click="openModal(scope.row, '修改')" v-if="userInfo?.userRole === 'enterprise'" link type="primary" >修改</el-button>
+						<el-button @click="openModal(scope.row, '修改')" v-if="userInfo?.userRole === 'enterprise' && scope.row.status === 0" link type="primary" >修改</el-button>
 						<el-button @click="openAuditVisible(scope.row)" v-if="auditStatus(scope.row)" link type="warning" >审核</el-button>
 						<el-button v-if="userInfo?.userRole === 'enterprise'" link type="danger"  @click="handleDelete(scope.row)">删除</el-button>
 					</template>

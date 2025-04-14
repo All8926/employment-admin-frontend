@@ -21,9 +21,19 @@ export const routes = [
         path: '/department',
         name: '部门管理',
         meta: {
-            icon: 'School',
+            icon: 'CreditCard',
+            userRole: "admin"
         },
         component: () => import('@/views/department/index.vue'),
+    },
+    {
+        path: '/teacher',
+        name:'教师管理',
+        meta: {
+            icon: 'School',
+              userRole: "admin"
+        },
+        component: () => import('@/views/teacher/index.vue'),
     },
     {
         path: '/contract',
@@ -39,7 +49,7 @@ export const routes = [
         redirect: '/user/index',
         component: () => import('@/views/user/setting.vue'),
         meta: {
-            icon: 'User' ,
+            icon: 'Postcard' ,
         },
         children: [
             {
@@ -59,18 +69,25 @@ export const routes = [
     {
         path: '/student',
         name: '学生管理',
+        meta: {
+            icon: 'User',
+            userRole: ["student","admin","teacher"],
+        },
         redirect: '/student/index',
         children: [
             {
                 path: '/student/index',
                 name: '学生列表',
+                meta: {
+                    userRole: ["admin","teacher"],
+                },
                 component: () => import('@/views/student/student.vue')
             },
             {
                 path: '/student/resume',
                 name: '简历管理',
                 meta: {
-                    userRole: ["student","admin","teacher"],
+                   
                 },
                 component: () => import('@/views/student/resume.vue'),
             }
@@ -79,27 +96,35 @@ export const routes = [
     {
         path: '/enterprise',
         name: '企业管理',
+        meta: {
+            icon: 'OfficeBuilding',
+            userRole: ["enterprise","admin","teacher"],
+        },
         redirect: '/enterprise/list',
         children: [
             {
                 path: '/enterprise/list',
                 name: '企业列表',
+                meta: {
+                    userRole: ["admin","teacher"],
+                },
                 component: () => import('@/views/enterprise/enterprise.vue')
             },
             {
                 path: '/enterprise/certification',
-                name: '资质管理',
-                meta: {
-                    userRole: ["enterprise","admin","teacher"],
-                },
+                name: '资质管理', 
                 component: () => import('@/views/enterprise/certification.vue'),
             }
         ]
     },
     {
-        path: '/statistics',
-        name: '数据统计',
-        component: () => import('@/views/statistics/index.vue'),
+        path: '/audit/log',
+        name: '审核记录',
+        meta: {
+            icon: 'Tickets',
+            userRole: ["admin","teacher"],
+        },
+        component: () => import('@/views/auditLog/index.vue'),
     },
     {path: '/404', name: '404', meta: {hideInLayout: true}, component: () => import('@/views/404.vue')},
     {path: '/', redirect: '/user/index'},
