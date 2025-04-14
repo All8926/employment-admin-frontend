@@ -5,7 +5,7 @@
 				<el-upload ref="uploadRef" action="string" :http-request="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed"
 					:before-upload="beforeUpload" :limit="1" style="width: 100%;">
 					<template #trigger>
-						<el-button type="primary">select file</el-button>
+						<el-button type="primary">选择文件</el-button>
 					</template>
 					<template #tip>
 						<div class="el-upload__tip">只能上传pdf文件，且不超过2M</div>
@@ -18,7 +18,7 @@
 			</el-form-item>
 			<el-form-item label="类型">
 				<el-input v-model="form.certType" placeholder="请输入资质类型"></el-input>
-			</el-form-item> 
+			</el-form-item>
 
 			<el-form-item label="备注">
 				<el-input v-model="form.remark" type="textarea" />
