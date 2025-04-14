@@ -25,6 +25,15 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  build:{
+    minify: 'esbuild',
+    /**
+     * 移除 console.log 和 debugger
+     */
+    esbuild: {
+      pure: ['console.log', 'debugger']
+    }
+  },
   server: {
     port: 6777,
     proxy: {
@@ -32,7 +41,7 @@ export default defineConfig({
         target: 'http://localhost:8101',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/dev-api/, ''),
-      }, 
+      },
     }
   },
 })
