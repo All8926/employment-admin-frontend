@@ -1,5 +1,5 @@
 # 使用官方的 Node 镜像作为基础镜像
-FROM node:16.20.2 AS builder
+FROM node:18.15.0 AS builder
  
 # 设置工作目录
 WORKDIR /app
