@@ -1,7 +1,7 @@
 import Axios from 'axios';
- 
+
 import { load } from '@/lib/loadingPlugin.js';
- 
+
 
 let loadingCounter = 0;
 
@@ -14,16 +14,17 @@ const configDefault = {
   baseURL: import.meta.env.VITE_BASE_API,
   data: {},
 };
- 
+
 
 class Http {
   // 当前实例的 axios 实例
   axiosInstance;
 
   constructor(config) {
-    this.axiosInstance = Axios.create(config); 
+    this.axiosInstance = Axios.create(config);
     this.httpInterceptorsRequest();
     this.httpInterceptorsResponse();
+    this.axiosInstance.withCredentials = true;
   }
 
   // 请求拦截
@@ -32,9 +33,10 @@ class Http {
       (config) => {
         manageLoading(true, config);
         setHeaders(config);
+        config.withCredentials = true;
         return config;
       },
-      (error) => { 
+      (error) => {
         return Promise.reject(error);
       },
     );
@@ -87,22 +89,22 @@ function manageLoading(isLoading, config) {
 }
 
 // 设置请求头
-function setHeaders(config) { 
-  
+function setHeaders(config) {
+
   if (config.method === 'post' && config.data instanceof FormData) {
     config.headers['Content-Type'] = 'multipart/form-data';
-  } 
+  }
 }
 
 // 处理响应
-function handleResponse(response) { 
-  
+function handleResponse(response) {
+
   if(response.data.code !== 0){
     ElMessage.error(response.data.message)
     throw new Error(response.data.message)
   }
  return response.data
-  
+
 }
- 
-export const http = new Http(configDefault); 
+
+export const http = new Http(configDefault);

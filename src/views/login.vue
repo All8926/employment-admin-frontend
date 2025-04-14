@@ -1,6 +1,6 @@
 <template>
 	<div class="w-[20%] m-auto mt-[100px]">
-		<div class="text-center text-3xl mb-[50px]">就业信息管理系统</div>
+		<div class="text-center text-3xl mb-[50px]">就业信息管理系统.</div>
 		<el-form :model="form" ref="formRef" :rules="rules" label-width="auto" size="large">
 			<el-form-item label="账号" prop="userAccount">
 				<el-input v-model="form.userAccount" />
@@ -18,7 +18,7 @@
 			<div class="mb-[15px] text-[12px] text-[#999999]">提示：管理员账号为admin/123456，选择教师</div>
 			<div class="mb-[15px]">
 				<el-button style="width: 100%;"   type="primary" @click="handleLogin">登录</el-button>
-			</div> 
+			</div>
 			<div>
 				<el-button style="width: 100%;" @click="toRegister">前往注册</el-button>
 			</div>
@@ -50,7 +50,7 @@ const rules = {
 	userRole: [{ required: true, message: '部门不能为空', trigger: 'change' }]
 }
 
- 
+
 
 const getDepartmentTree = async () => {
 	try {
@@ -83,7 +83,7 @@ const handleLogin = () => {
 const toRegister = () => {
 	router.replace('/register')
 }
- 
+
 </script>
 
 <style lang="less" scoped>
