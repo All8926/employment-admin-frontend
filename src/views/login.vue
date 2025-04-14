@@ -1,6 +1,6 @@
 <template>
 	<div class="w-[20%] m-auto mt-[100px]">
-		<div class="text-center text-3xl mb-[50px]">就业信息管理系统.</div>
+		<div class="text-center text-3xl mb-[50px]">就业信息管理系统</div>
 		<el-form :model="form" ref="formRef" :rules="rules" label-width="auto" size="large">
 			<el-form-item label="账号" prop="userAccount">
 				<el-input v-model="form.userAccount" />
