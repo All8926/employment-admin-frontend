@@ -15,7 +15,7 @@
 					<el-radio value="enterprise">企业</el-radio>
 				</el-radio-group>
 			</el-form-item>
-			<div class="mb-[15px] text-[12px] text-[#999999]">提示：管理员账号为admin/123456，选择教师</div>
+			<div class="mb-[15px] text-[12px] text-[#999999]">提示：管理员账号为admin/123456</div>
 			<div class="mb-[15px]">
 				<el-button style="width: 100%;"   type="primary" @click="handleLogin">登录</el-button>
 			</div>
@@ -38,9 +38,9 @@ const userStore = useUserStore()
 const router = useRouter()
 
 const form = ref({
-	userAccount: 'qqq1',
+	userAccount: 'admin',
 	userPassword: '123456',
-	userRole: 'student',
+	userRole: 'teacher',
 })
 const formRef = ref(null)
 
