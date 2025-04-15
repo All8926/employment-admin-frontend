@@ -12,6 +12,7 @@
 					<el-select v-model="queryParams.targetType" clearable placeholder="请选择审核类型"> 
 						<el-option label="企业资质" value="certification"></el-option>
 						<el-option label="合同" value="contract"></el-option>
+						<el-option label="账号注册" value="register"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="审核结果">

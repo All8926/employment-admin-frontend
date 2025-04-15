@@ -1,6 +1,6 @@
 <template>
   <el-dialog :model-value="visible"  @update:model-value="updateVisible" :title="title" width="40%">
-    <el-form :model="form" :disabled="disabled">
+    <el-form :model="form" :disabled="disabled" label-width="100">
       <el-form-item label="姓名">
         <el-input v-model="form.userName" placeholder="请输入姓名"></el-input>
       </el-form-item>
@@ -23,9 +23,26 @@
       <el-form-item label="部门" >
 				<el-tree-select placeholder="请选择部门" v-model="form.deptId" :data="treeData" :props="{ value: 'id', label: 'name' }" node-key="id" />
 			</el-form-item>
+      <el-form-item label="毕业时间"   >
+				<el-date-picker
+						v-model="form.graduationDate"
+						type="date"
+						placeholder="请选择时间"
+						value-format="YYYY-MM-DD"
+				/>
+			</el-form-item>
+			<el-form-item label="毕业去向"  >
+				<el-cascader placeholder="请选择毕业去向" :props="cascaderProps" clearable :show-all-levels="false" v-model="form.graduationGoes"  :options="cityList"/>
+			</el-form-item>
+			<el-form-item label="无去向原因" >
+				<el-input v-model="form.notGoesReason" placeholder="请输入无去向原因"></el-input>
+			</el-form-item>
       <el-form-item label="简介" >
       <el-input v-model="form.userProfile" type="textarea" />
     </el-form-item>
+    <el-form-item label="创建时间"  >
+				<el-input readonly v-model="form.createTime" placeholder="请输入创建时间" /> 
+			</el-form-item>
 
     </el-form>
     <template #footer>
@@ -49,6 +66,8 @@
 import { ref, defineProps, defineEmits, computed } from 'vue'
 import { useUserStore } from '@/stores/modules/user'
 import {updateStudent} from '@/api/student'
+import {cityList} from '@/utils/city'
+const cascaderProps = {  label:"cityName",value:"cityName" ,children:"citys"}
 
 const userStore = useUserStore()
 const props = defineProps({

@@ -46,7 +46,7 @@
 					<el-form-item label="密码" prop="userPassword">
 						<el-input type="password" v-model="enterpriseForm.userPassword" />
 					</el-form-item>
-					<el-form-item label="姓名" prop="userName">
+					<!-- <el-form-item label="姓名" prop="userName">
 						<el-input v-model="enterpriseForm.userName" />
 					</el-form-item>
 					<el-form-item label="性别" prop="gender">
@@ -57,14 +57,14 @@
 					</el-form-item>
 					<el-form-item label="手机号" prop="phone">
 						<el-input v-model="enterpriseForm.phone" />
-					</el-form-item>
+					</el-form-item> -->
 					<el-form-item label="企业名称" prop="enterpriseName">
 						<el-input v-model="enterpriseForm.enterpriseName" />
 					</el-form-item>
-			
+<!-- 			
 					<el-form-item label="职务" prop="job">
 						<el-input v-model="enterpriseForm.job" />
-					</el-form-item>
+					</el-form-item> -->
 					<el-form-item label="统一社会信用代码" prop="licenseNum">
 						<el-input v-model="enterpriseForm.licenseNum" />
 					</el-form-item>
@@ -170,7 +170,9 @@ const enterpriseFormRef = ref(null)
 const teacherFormRef = ref(null)
 
 const studentRules = {
-	userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
+	userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' },
+		{max: 12, message: '账号不能超过12位', trigger: 'blur'}
+	],
 	userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
 	studentNumber: [{ required: true, message: '学号不能为空', trigger: 'blur' }],
 	deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }]
@@ -211,7 +213,7 @@ const submitStudentForm = () => {
 		if (valid) {
 			try {
 				const res = await studentRegister(studentForm.value)
-				ElMessage.success('注册成功')
+				ElMessage.success('注册成功，等待审核')
 				// 跳转到登录页面
 				router.push('/login')
 			} catch (error) {
@@ -229,7 +231,7 @@ const submitEnterpriseForm = () => {
 		if (valid) {
 			try {
 				const res = await enterpriseRegister(enterpriseForm.value)
-				ElMessage.success('注册成功')
+				ElMessage.success('注册成功，等待审核')
 				// 跳转到登录页面
 				router.push('/login')
 			} catch (error) {
@@ -247,7 +249,7 @@ const submitTeacherForm = () => {
 		if (valid) {
 			try {
 				const res = await teacherRegister(teacherForm.value)
-				ElMessage.success('注册成功')
+				ElMessage.success('注册成功，等待审核')
 				// 跳转到登录页面
 				router.push('/login')
 			} catch (error) { 

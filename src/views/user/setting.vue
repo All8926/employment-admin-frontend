@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col w-[25%]  ml-[30%]">
+	<div class="flex flex-col w-[35%]  ml-[25%]">
 		<div class="flex justify-center mb-[20px]">
 			<el-upload action="string" :http-request="handeUpload" :show-file-list="false" :on-success="handleAvatarSuccess"
 				:before-upload="beforeAvatarUpload">
@@ -11,12 +11,26 @@
 				</el-avatar>
 			</el-upload>
 		</div>
-		<el-form :model="form">
+		<el-form :model="form" label-width="100">
 			<el-form-item label="姓名">
 				<el-input v-model="form.userName" placeholder="请输入姓名"></el-input>
 			</el-form-item>
 			<el-form-item label="学号" v-if="form?.userRole === 'student'">
 				<el-input v-model="form.studentNumber" placeholder="请输入学号"></el-input>
+			</el-form-item>
+			<el-form-item label="毕业时间"  v-if="form?.userRole === 'student'">
+				<el-date-picker
+						v-model="form.graduationDate"
+						type="date"
+						placeholder="请选择时间"
+						value-format="YYYY-MM-DD"
+				/>
+			</el-form-item>
+			<el-form-item label="毕业去向" v-if="form?.userRole === 'student'">
+				<el-cascader placeholder="请选择毕业去向" :props="cascaderProps" clearable :show-all-levels="false" v-model="form.graduationGoes"  :options="cityList"/>
+			</el-form-item>
+			<el-form-item label="无去向原因" v-if="form?.userRole === 'student'">
+				<el-input v-model="form.notGoesReason" placeholder="请输入无去向原因"></el-input>
 			</el-form-item>
 			<el-form-item label="编号" v-if="form?.userRole === 'teacher'">
 				<el-input v-model="form.teacherNumber" placeholder="请输入编号"></el-input>
@@ -77,11 +91,14 @@ import { editUser, uploadFile } from '@/api/index'
 import { ref, reactive, onMounted } from 'vue'
 import { UploadFilled, Avatar } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/modules/user'
+import {cityList} from '@/utils/city'
 const userStore = useUserStore()
 
-const form = ref(userStore?.userinfo)
+const form = ref({...userStore?.userinfo})
 const treeData = userStore?.departmentDate
 const formData = ref(null)
+
+const cascaderProps = {  label:"cityName",value:"cityName" ,children:"citys"}
 // 提交修改
 const handleSubmit = async () => {
 	try {
@@ -90,6 +107,7 @@ const handleSubmit = async () => {
 			let avatarUrl = res.data
 			form.value.userAvatar = avatarUrl
 		}
+		// let params = {...form.value, graduationGoes}
 		await editUser(form.value)
 		userStore?.getUserInfo()
 		formData.value = null

@@ -29,7 +29,7 @@
 				<el-input v-model="form.studentName" placeholder="请输入学生姓名"></el-input>
 			</el-form-item>
 			<el-form-item label="学生账号" prop="studentAccount"  >
-				<el-input v-model="form.studentAccount" placeholder="请输入学生姓名"></el-input>
+				<el-input v-model="form.studentAccount" placeholder="请输入学生账号"></el-input>
 			</el-form-item>
 
 

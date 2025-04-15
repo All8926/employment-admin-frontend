@@ -83,8 +83,8 @@
 							>
 							审核
 						</el-button>
-						<el-button @click="openModal(scope.row, '修改')" v-if="scope.row.status === 1" link type="primary"
-							>修改</el-button>
+						<!-- <el-button @click="openModal(scope.row, '修改')" v-if="scope.row.status === 1  " link type="primary"
+							>修改</el-button> -->
 
 						<el-button v-if="scope.row.status === 1" link type="danger"
 							@click="handleDelete(scope.row)">删除</el-button>

@@ -13,6 +13,9 @@
     <div>手机号：<span>{{userinfo?.phone || '-'}}</span></div>
     <div  v-if="userinfo?.userRole !== 'enterprise'">部门：<span>{{userinfo?.deptName || '-'}}</span></div>
     <div v-if="userinfo?.userRole === 'student'">学号：<span>{{userinfo?.studentNumber}}</span></div>
+    <div v-if="userinfo?.userRole === 'student'">毕业时间：<span>{{userinfo?.graduationDate || '-'}}</span></div>
+    <div v-if="userinfo?.userRole === 'student'">毕业去向：<span>{{graduationGoes}}</span></div>
+    <div v-if="userinfo?.userRole === 'student'">无去向原因：<span>{{userinfo?.notGoesReason || '-'}}</span></div>
     <div v-if="userinfo?.userRole != 'student'">职务：<span>{{userinfo?.job || '-'}}</span></div>
     <div v-if="userinfo?.userRole == 'tracher'">学历：<span>{{userinfo?.qualification || '-'}}</span></div>
    <div v-if="userinfo?.userRole == 'enterprise'">企业名称：<span>{{ userinfo?.enterpriseName || '-'}}</span></div>
@@ -20,20 +23,29 @@
    <div v-if="userinfo?.userRole == 'enterprise'">所属行业：<span>{{ userinfo?.industry || '-'}}</span></div>
    <div v-if="userinfo?.userRole == 'enterprise'">统一社会信用代码：<span>{{ userinfo?.licenseNum || '-'}}</span></div>
    <div v-if="userinfo?.userRole == 'enterprise'">经营范围：<span>{{ userinfo?.businessScope || '-'}}</span></div>
+   <div v-if="userinfo?.userRole == 'enterprise'">认证状态： 
+						<el-tag type="success" effect="dark" v-if="userinfo.isAuthorized === 1">已认证</el-tag>
+						<el-tag type="danger" effect="dark" v-if="userinfo.isAuthorized === 0">未认证</el-tag></div>
     <div>创建时间：<span>{{ userinfo?.createTime }}</span></div>
      <div  >简介：<span>{{userinfo?.userProfile || '-'}}</span></div>
 	</div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref ,computed} from 'vue'
 import { useUserStore } from "@/stores/modules/user.js";
 import {UserFilled} from '@element-plus/icons-vue'
 const userStore = useUserStore()
  
 const userinfo = ref(userStore?.userinfo)
 
-
+const graduationGoes = computed(() => {
+ let graduationGoes = userinfo.value?.graduationGoes
+  if(graduationGoes) {
+    return graduationGoes.join('-')
+  }
+  return '-'
+})
 </script>
 
 <style lang="less" scoped>

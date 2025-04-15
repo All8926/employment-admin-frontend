@@ -15,6 +15,9 @@
 						<el-option label="未知" :value="2"></el-option>
 					</el-select>
 				</el-form-item>
+				<el-form-item label="毕业去向">
+					<el-input v-model="queryParams.graduationGoes" placeholder="请输入城市名"></el-input>
+				</el-form-item>
 				<el-form-item label="状态">
 					<el-select v-model="queryParams.status" clearable placeholder="请选择状态">
 						<el-option label="待审核" :value="0"></el-option>
@@ -51,6 +54,7 @@
 				<el-table-column prop="studentNumber" label="学号" />
 				<el-table-column prop="phone" label="手机号" />
 				<el-table-column prop="deptName" label="学院/专业" />
+				<el-table-column prop="graduationGoes" label="毕业去向" />
 				<el-table-column prop="status" label="状态">
 					<template #default="scope">
 						<el-tag type="warning" effect="dark" v-if="scope.row.status === 0">待审核</el-tag>
@@ -58,7 +62,7 @@
 						<el-tag type="danger" effect="dark" v-if="scope.row.status === 2">已拒绝</el-tag>
 					</template>
 				</el-table-column>
-				<el-table-column prop="createTime" label="创建时间" />
+				<!-- <el-table-column prop="creat1eTime" label="创建时间" /> -->
 
 				<el-table-column fixed="right" label="操作" min-width="120">
 					<template #default="scope">
@@ -99,6 +103,7 @@ const total = ref(0)
 const queryParams = ref({
 	userName: '',
 	studentNumber: '',
+	graduationGoes: '',
 	gender: null,
 	status: null,
 	current: 1,
@@ -108,6 +113,8 @@ const queryParams = ref({
 const modalTitle = ref('')
 const visible = ref(false)
 const currentRow = ref(null)
+
+
 
 const handleVisible = (val) => {
 	visible.value = val
