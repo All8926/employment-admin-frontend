@@ -42,7 +42,7 @@
         </el-button>
       </div>
       <div class="dialog-footer" v-if="title === '审核'">
-        <el-button type="danger" @click="handleStatus(2)">拒绝</el-button>
+        <el-button type="danger" @click="handleStatus(0)">拒绝</el-button>
         <el-button type="success" @click="handleStatus(1)">
           通过
         </el-button>
@@ -55,6 +55,7 @@
 import { ref, defineProps, defineEmits, computed } from 'vue'
 import { useUserStore } from '@/stores/modules/user'
 import {updateTeacher} from '@/api/teacher'
+import { userAudit } from '@/api/index'
 
 const userStore = useUserStore()
 const props = defineProps({
@@ -75,12 +76,10 @@ const props = defineProps({
         gender: null,
         email: '',
         phone: '',
-        teacherNumber: '',
-        userProfile: '',
         deptId: null,
         userProfile:'',
         qualification: '',
-        job: '', 
+        job: '',
       }
     }
   },
@@ -117,14 +116,30 @@ const handleSubmit = async () =>{
 
 // 审核
 const handleStatus = async (status) => {
-  try {
-    await updateTeacher({...form.value, status})
-    ElMessage.success('操作成功')
-    updateVisible(false)
-    emit('submit')
-  } catch (error) {
-    console.log(error)
-  }
+    let {id, userAccount, userRole} = form.value
+    let params = {id, userAccount, userRole, status}
+    if(status){
+        return  handleUserAudit(params)
+    }
+    ElMessageBox.prompt('请输入拒绝原因', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+    }).then(({value}) => {
+        params.rejectReason = value
+        handleUserAudit(params)
+    })
+}
+
+// 发送审核请求
+const handleUserAudit = async (params) => {
+    try {
+        await userAudit(params)
+        ElMessage.success('操作成功')
+        updateVisible(false)
+        emit('submit')
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 </script>

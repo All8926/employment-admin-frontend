@@ -35,7 +35,7 @@
       <el-form-item label="简介" >
       <el-input v-model="form.userProfile" type="textarea" />
     </el-form-item>
- 
+
     </el-form>
     <template #footer>
       <div class="dialog-footer" v-if="!disabled && title === '修改'">
@@ -45,7 +45,7 @@
         </el-button>
       </div>
       <div class="dialog-footer" v-if="title === '审核'">
-        <el-button type="danger" @click="handleStatus(2)">拒绝</el-button>
+        <el-button type="danger" @click="handleStatus(0)">拒绝</el-button>
         <el-button type="success" @click="handleStatus(1)">
           通过
         </el-button>
@@ -58,6 +58,7 @@
 import { ref, defineProps, defineEmits, computed } from 'vue'
 import { useUserStore } from '@/stores/modules/user'
 import {updateEnterprise} from '@/api/enterprise'
+import { userAudit } from '@/api/index'
 
 const userStore = useUserStore()
 const props = defineProps({
@@ -68,26 +69,26 @@ const props = defineProps({
   title: {
     type: String,
     default: '修改'
-  }, 
+  },
   formData: {
     type: Object,
     default: () => {
       return {
-        userName: '', 
+        userName: '',
         gender: null,
         email: '',
         phone: '',
         enterpriseName: '',
-        userProfile: '',  
+        userProfile: '',
       }
     }
   },
   cancel: {
     type: Function,
     default: () => {
-      
+
     }
-  }, 
+  },
 })
 
 const disabled = computed(() => props.title !==  '修改')
@@ -115,14 +116,30 @@ const handleSubmit = async () =>{
 
 // 审核
 const handleStatus = async (status) => {
-  try {
-    await updateEnterprise({...form.value, status})
-    ElMessage.success('操作成功')
-    updateVisible(false)
-    emit('submit')
-  } catch (error) {
-    console.log(error)
-  }
+    let {id, userAccount, userRole} = form.value
+    let params = {id, userAccount, userRole, status}
+    if(status){
+       return  handleUserAudit(params)
+    }
+    ElMessageBox.prompt('请输入拒绝原因', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+    }).then(({value}) => {
+        params.rejectReason = value
+        handleUserAudit(params)
+    })
+}
+
+// 发送审核请求
+const handleUserAudit = async (params) => {
+    try {
+        await userAudit(params)
+        ElMessage.success('操作成功')
+        updateVisible(false)
+        emit('submit')
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 </script>

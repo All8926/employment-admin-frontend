@@ -24,20 +24,20 @@ export const userLogout = () => {
     method: 'post',
   })
 }
- 
+
 // 编辑用户
 const editApiMap = {
   'student': '/student/edit',
   'teacher': '/teacher/edit',
   'admin': '/teacher/edit',
   'enterprise': '/enterprise/edit'
-} 
+}
 
 export const editUser = (data) => {
   console.log(data);
   console.log(data.userRole);
   console.log(editApiMap[data.userRole]);
-  
+
   if (!editApiMap[data.userRole]) {
     return Promise.reject('无效的用户角色')
   }
@@ -53,6 +53,15 @@ export const editUser = (data) => {
 export const uploadFile = (data,biz) => {
   return http.request({
     url: '/file/upload?biz='+biz,
+    method: 'post',
+    data
+  })
+}
+
+// 用户审核
+export const userAudit = (data) => {
+  return http.request({
+    url: '/user/audit',
     method: 'post',
     data
   })

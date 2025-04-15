@@ -28,7 +28,7 @@
 					</el-form-item>
 					<el-form-item label="手机号" prop="phone">
 						<el-input v-model="studentForm.phone" />
-					</el-form-item> 
+					</el-form-item>
 					<el-form-item label="用户简介" prop="userProfile">
 						<el-input type="textarea" v-model="studentForm.userProfile" />
 					</el-form-item>
@@ -61,7 +61,7 @@
 					<el-form-item label="企业名称" prop="enterpriseName">
 						<el-input v-model="enterpriseForm.enterpriseName" />
 					</el-form-item>
-<!-- 			
+<!--
 					<el-form-item label="职务" prop="job">
 						<el-input v-model="enterpriseForm.job" />
 					</el-form-item> -->
@@ -106,7 +106,7 @@
 					</el-form-item>
 					<el-form-item label="手机号" prop="phone">
 						<el-input v-model="teacherForm.phone" />
-					</el-form-item> 
+					</el-form-item>
 					<el-form-item label="用户简介" prop="userProfile">
 						<el-input type="textarea" v-model="teacherForm.userProfile" />
 					</el-form-item>
@@ -139,7 +139,7 @@ const studentForm = ref({
 	gender: 0,
 	studentNumber: '',
 	deptId: null,
-	phone: '', 
+	phone: '',
 	userProfile: ''
 })
 const enterpriseForm = ref({
@@ -161,7 +161,7 @@ const teacherForm = ref({
 	teacherNumber: '',
 	deptId: null,
 	job: '',
-	phone: '', 
+	phone: '',
 	userProfile: ''
 })
 
@@ -175,22 +175,24 @@ const studentRules = {
 	],
 	userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
 	studentNumber: [{ required: true, message: '学号不能为空', trigger: 'blur' }],
-	deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }]
+	deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }],
+	userName: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
 }
 
 const enterpriseRules = {
 	userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
 	userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
-	enterpriseName: [{ required: true, message: '企业名称不能为空', trigger: 'blur' }], 
-	licenseNum: [{ required: true, message: '统一社会信用代码不能为空', trigger: 'blur' }], 
-	address: [{ required: true, message: '办公地址不能为空', trigger: 'blur' }], 
+	enterpriseName: [{ required: true, message: '企业名称不能为空', trigger: 'blur' }],
+	licenseNum: [{ required: true, message: '统一社会信用代码不能为空', trigger: 'blur' }],
+	address: [{ required: true, message: '办公地址不能为空', trigger: 'blur' }],
 }
 
 const teacherRules = {
 	userAccount: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
 	userPassword: [{ required: true, message: '密码不能为空', trigger: 'blur' }],
 	teacherNumber: [{ required: true, message: '编号不能为空', trigger: 'blur' }],
-	deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }]
+	deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }],
+	userName: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
 }
 
 const treeData = ref([])
@@ -208,7 +210,7 @@ const getDepartmentTree = async () => {
 getDepartmentTree()
 
 // 学生注册提交
-const submitStudentForm = () => { 
+const submitStudentForm = () => {
 	studentFormRef.value.validate(async valid => {
 		if (valid) {
 			try {
@@ -252,9 +254,9 @@ const submitTeacherForm = () => {
 				ElMessage.success('注册成功，等待审核')
 				// 跳转到登录页面
 				router.push('/login')
-			} catch (error) { 
+			} catch (error) {
 				console.log(error);
-				
+
 			}
 		} else {
 			ElMessage.error('请填写完整信息')
