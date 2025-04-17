@@ -48,16 +48,16 @@
 			<el-table :data="tableData" style="width: 100%" :cell-style="{textAlign: 'center'}"
 				:header-cell-style="{textAlign: 'center',backgroundColor: '#f5f7fa'}" empty-text="暂无数据">
 				<el-table-column type="index" width="50" />
-				<el-table-column prop="userName" label="姓名" />
-				<el-table-column prop="gender" label="性别">
+				<!-- <el-table-column prop="userName" label="姓名" /> -->
+				<!-- <el-table-column prop="gender" label="性别">
 					<template #default="scope">
 						<span>{{ scope.row.gender === 0 ? '男' : scope.row.gender === 1 ? '女' : '未知' }}</span>
 					</template>
-				</el-table-column>
-				<el-table-column prop="phone" label="手机号" />
+				</el-table-column> -->
+				<!-- <el-table-column prop="phone" label="手机号" /> -->
 				<el-table-column prop="enterpriseName" label="企业名称" />
 				<el-table-column prop="licenseNum" label="统一社会信用代码" />
-				<el-table-column prop="industry" label="所属行业" />
+				<!-- <el-table-column prop="industry" label="所属行业" /> -->
 				<el-table-column prop="isAuthorized" label="是否认证">
 					<template #default="scope">
 						<el-tag type="success" effect="dark" v-if="scope.row.isAuthorized === 1">已认证</el-tag>
