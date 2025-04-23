@@ -177,6 +177,7 @@ const studentRules = {
 	studentNumber: [{ required: true, message: '学号不能为空', trigger: 'blur' }],
 	deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }],
 	userName: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
+	phone: [ { pattern: /^1[3-9]\d{9}$/,  message: '请输入正确的手机号', trigger: 'blur'  }]
 }
 
 const enterpriseRules = {
@@ -193,6 +194,7 @@ const teacherRules = {
 	teacherNumber: [{ required: true, message: '编号不能为空', trigger: 'blur' }],
 	deptId: [{ required: true, message: '部门不能为空', trigger: 'change' }],
 	userName: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
+	phone: [ { pattern: /^1[3-9]\d{9}$/,  message: '请输入正确的手机号', trigger: 'blur'  }]
 }
 
 const treeData = ref([])

@@ -7,6 +7,11 @@
             </div>
             <div>企业名称：{{ form.enterpriseName }}</div>
             <div>学生名称：{{ form.studentName }}</div>
+            <div>
+                学生简历：
+                <el-button v-for="item in form.resumeList" :key="item.id" link  type="primary" @click="openFile(item)">{{ item.fileName }}</el-button>
+                <span v-if="form.resumeList.length === 0">无</span>
+            </div>
             <div>签约日期：{{ form.signDate }}</div>
             <div v-if="form.teacherName">审核老师：{{ form.teacherName }}</div>
             <div>备注：{{ form.remark || '无' }}</div>
@@ -120,9 +125,9 @@ const updateVisible = (value) => {
     props.cancel(value)
 }
 
-const openFile = () => {
-    if (form.value.filePath) {
-        window.open(form.value.filePath)
+const openFile = (item) => {
+    if (item.filePath) {
+        window.open(item.filePath)
     } else {
         userStore.$message({
             message: '文件不存在',

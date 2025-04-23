@@ -12,7 +12,7 @@
 								<UserFilled />
 							</el-icon>
 						</el-avatar>
-						<span class="text-[16px]">{{userinfo?.userName}}</span>
+						<span class="text-[16px]">{{userinfo?.userRole === 'enterprise' ? userinfo?.enterpriseName : userinfo?.userName}}</span>
 					</div>
 					<template #dropdown>
 						<el-dropdown-menu>

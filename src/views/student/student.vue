@@ -25,6 +25,12 @@
 						<el-option label="已拒绝" :value="2"></el-option>
 					</el-select>
 				</el-form-item>
+				<el-form-item label="是否就业">
+					<el-select v-model="queryParams.isEmployed" clearable placeholder="请选择状态">
+						<el-option label="未就业" :value="0"></el-option>
+						<el-option label="已就业" :value="1"></el-option> 
+					</el-select>
+				</el-form-item>
 				<el-form-item>
 					<el-button @click="handleReset">重置</el-button>
 					<el-button type="primary" @click="handleSearch">查询</el-button>
@@ -60,6 +66,12 @@
 						<el-tag type="warning" effect="dark" v-if="scope.row.status === 0">待审核</el-tag>
 						<el-tag type="success" effect="dark" v-if="scope.row.status === 1">正常</el-tag>
 						<el-tag type="danger" effect="dark" v-if="scope.row.status === 2">已拒绝</el-tag>
+					</template>
+				</el-table-column>
+				<el-table-column prop="isEmployed" label="是否就业">
+					<template #default="scope">  
+						<el-tag type="success" effect="dark" v-if="scope.row.isEmployed == 1">是</el-tag>
+						<el-tag type="danger" effect="dark" v-if="scope.row.isEmployed == 0">否</el-tag> 
 					</template>
 				</el-table-column>
 				<!-- <el-table-column prop="creat1eTime" label="创建时间" /> -->
@@ -106,6 +118,7 @@ const queryParams = ref({
 	graduationGoes: '',
 	gender: null,
 	status: null,
+	isEmployed: null,
 	current: 1,
 	pageSize: 10
 })

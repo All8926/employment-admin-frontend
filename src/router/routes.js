@@ -125,6 +125,15 @@ export const routes = [
             userRole: ["admin","teacher"],
         },
         component: () => import('@/views/auditLog/index.vue'),
+    }, 
+    {
+        path: '/sign/info',
+        name: '签约信息',
+        meta: {
+            icon: 'CreditCard',
+            userRole: ["admin","teacher","student"],
+        },
+        component: () => import('@/views/signInfo/index.vue'),
     },
     {path: '/404', name: '404', meta: {hideInLayout: true}, component: () => import('@/views/404.vue')},
     {path: '/', redirect: '/user/index'},
